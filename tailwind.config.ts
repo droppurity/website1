@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Poppins', 'sans-serif'],
+        headline: ['Poppins', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -65,6 +65,8 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        'dynamic-accent': 'hsl(var(--dynamic-accent-hsl))',
+        'dynamic-accent-foreground': 'hsl(var(--dynamic-accent-foreground-hsl))',
       },
       borderRadius: {
         lg: 'var(--radius)',
