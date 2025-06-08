@@ -145,10 +145,15 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
-  const stickyHeaderTopClass = headerVisible ? 'top-16' : 'top-0';
-  // Plan card sticky top: If header is visible, main header (4rem) + sticky selector part (approx 10rem based on prev top-56 being 14rem total from screen top) = 14rem (top-56)
-  // If header is not visible, sticky selector part (approx 10rem) = 10rem (top-40)
-  const stickyCardTopClass = headerVisible ? 'top-56' : 'top-40';
+  const stickyHeaderTopClass = headerVisible ? 'top-16' : 'top-0'; // Main header is h-16 (4rem)
+  // Approx heights: PurifierSelector content ~2.5rem, KeyFeaturesDisplay mobile h-[40px] ~2.5rem. Total content ~5rem.
+  // Sticky section padding: 'pt-4 pb-1' (1.25rem) with header, 'pt-2 pb-0.5' (0.75rem) without header.
+  // Total sticky section height with header: 5rem + 1.25rem = 6.25rem.
+  // Total sticky section height without header: 5rem + 0.75rem = 5.75rem.
+  // Card top position = (header height) + (sticky section height).
+  // With header: 4rem (header) + 6.25rem (sticky section) = 10.25rem.
+  // Without header: 0rem (header) + 5.75rem (sticky section) = 5.75rem.
+  const stickyCardTopClass = headerVisible ? 'top-[10.25rem]' : 'top-[5.75rem]';
 
 
   return (
@@ -164,7 +169,7 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
             </p>
         </header>
 
-        <div className={`sticky ${stickyHeaderTopClass} bg-background z-40 pt-4 pb-1 shadow-sm mb-6 sm:mb-10`}>
+        <div className={`sticky ${stickyHeaderTopClass} bg-background z-40 ${headerVisible ? 'pt-4 pb-1' : 'pt-2 pb-0.5'} shadow-sm mb-6 sm:mb-10`}>
           <PurifierSelector
             purifiers={purifiers}
             selectedPurifierId={selectedPurifierId}
@@ -244,3 +249,4 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     </div>
   );
 }
+

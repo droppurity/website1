@@ -41,7 +41,7 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
     if (isMobile && features.length > 0) {
       const timer = setInterval(() => {
         setCurrentFeatureIndex(prevIndex => (prevIndex + 1) % features.length);
-      }, 3000);
+      }, 3000); // Animation interval remains 3s
       return () => clearInterval(timer);
     }
   }, [isMobile, features.length]);
@@ -56,9 +56,9 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
 
 
   return (
-    <div className={`w-full mx-auto my-4 md:my-6 ${className}`}>
+    <div className={`w-full mx-auto my-2 md:my-4 ${className}`}> {/* Reduced my-4 to my-2 for mobile */}
       {isMobile && features.length > 0 ? (
-        <div className="h-[50px] flex items-center justify-center overflow-hidden px-2">
+        <div className="h-[40px] flex items-center justify-center overflow-hidden px-2"> {/* Reduced height from 50px to 40px */}
              <AnimatedFeature
                 key={features[currentFeatureIndex].id}
                 feature={features[currentFeatureIndex]}
@@ -75,3 +75,4 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
     </div>
   );
 }
+
