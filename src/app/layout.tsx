@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Droppurity - Pure Water, Pure Life</title> {/* Fallback title, consider moving Metadata to page.tsx */}
+        <title>Droppurity - Pure Water, Pure Life</title>
         <meta name="description" content="Discover the best water purifier solutions with Droppurity." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
