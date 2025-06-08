@@ -10,7 +10,7 @@ import PurifierSelector from '@/components/droppurity/PurifierSelector';
 import TenureSelector from '@/components/droppurity/TenureSelector';
 import PlanCard from '@/components/droppurity/PlanCard';
 import PlanTypeSelector from '@/components/droppurity/PlanTypeSelector';
-import KeyFeaturesDisplay from '@/components/droppurity/KeyFeaturesDisplay'; // Import KeyFeaturesDisplay
+import KeyFeaturesDisplay from '@/components/droppurity/KeyFeaturesDisplay';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Droplet, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -161,6 +161,7 @@ export default function PlanSelectionSection() {
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
+          <KeyFeaturesDisplay purifier={selectedPurifier} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
@@ -169,14 +170,12 @@ export default function PlanSelectionSection() {
           </div>
 
           <div className="lg:col-span-3">
-            <Card className="shadow-xl sticky top-36">
+            <Card className="shadow-xl sticky top-56">
               <CardHeader>
                 <CardTitle className="font-headline text-xl text-foreground">Flexible Rental Plans</CardTitle>
                 <p className="text-sm text-muted-foreground">Security deposit of ₹1,500 will be 100% refundable.</p>
               </CardHeader>
               <CardContent className="p-4 sm:p-6 space-y-6">
-                
-                <KeyFeaturesDisplay purifier={selectedPurifier} />
                 
                 <Separator />
                 <div>
@@ -236,4 +235,3 @@ export default function PlanSelectionSection() {
     </div>
   );
 }
-

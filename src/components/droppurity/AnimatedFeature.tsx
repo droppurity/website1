@@ -28,7 +28,7 @@ export default function AnimatedFeature({ feature, className, accentIsPrimary }:
 
   return (
     <div
-      className={`transition-all duration-500 ease-in-out transform ${
+      className={`transition-all duration-300 ease-in-out transform ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       } ${className}`}
     >
