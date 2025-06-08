@@ -32,7 +32,6 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
   const isMobile = useIsMobile();
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
-  // Use technical key features from purifier.keyFeatures
   const features = purifier?.keyFeatures || []; 
   const accentIsPrimary = !purifier || purifier.accentColor === 'blue';
 
@@ -41,14 +40,14 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
     if (isMobile && features.length > 0) {
       const timer = setInterval(() => {
         setCurrentFeatureIndex(prevIndex => (prevIndex + 1) % features.length);
-      }, 3000); // Animation interval remains 3s
+      }, 3000); 
       return () => clearInterval(timer);
     }
   }, [isMobile, features.length]);
 
   if (!purifier || features.length === 0) {
     return (
-      <div className={`w-full mx-auto my-4 p-2 text-center text-sm text-muted-foreground ${className}`}>
+      <div className={`w-full mx-auto mt-1 mb-2 md:mt-2 md:mb-3 p-2 text-center text-sm text-muted-foreground ${className}`}> {/* Adjusted margins */}
         {purifier ? 'No specific key features listed for this purifier.' : 'Select a purifier to see its features.'}
       </div>
     );
@@ -56,9 +55,9 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
 
 
   return (
-    <div className={`w-full mx-auto my-2 md:my-4 ${className}`}> {/* Reduced my-4 to my-2 for mobile */}
+    <div className={`w-full mx-auto mt-1 mb-2 md:mt-2 md:mb-3 ${className}`}> {/* Adjusted margins */}
       {isMobile && features.length > 0 ? (
-        <div className="h-[40px] flex items-center justify-center overflow-hidden px-2"> {/* Reduced height from 50px to 40px */}
+        <div className="h-[40px] flex items-center justify-center overflow-hidden px-2"> 
              <AnimatedFeature
                 key={features[currentFeatureIndex].id}
                 feature={features[currentFeatureIndex]}
@@ -75,4 +74,3 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
     </div>
   );
 }
-

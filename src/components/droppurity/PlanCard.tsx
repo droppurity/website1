@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 interface PlanCardProps {
   plan: Plan;
   tenure: TenureOption;
-  displayPurifierName?: string; // Optional: To display combined name like "Droppurity Copper - Value Plan"
+  displayPurifierName?: string; 
 }
 
 export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCardProps) {
@@ -63,10 +63,8 @@ export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCard
   }
 
   return (
-    // Removed outer border classes, assuming it will be placed inside another card or section.
-    // Added relative positioning for the badge if needed.
     <div className={`flex flex-col rounded-xl overflow-hidden ${plan.recommended && !displayPurifierName ? 'border-dynamic-accent border-2 relative' : ''}`}>
-      {plan.recommended && plan.pillText && !displayPurifierName && ( // only show pill if not part of composite display
+      {plan.recommended && plan.pillText && !displayPurifierName && ( 
         <Badge variant="default" className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dynamic-accent text-dynamic-accent-foreground px-3 py-1 text-xs z-10">
           {plan.pillText}
         </Badge>
@@ -75,7 +73,7 @@ export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCard
         <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-foreground">
           {displayPurifierName || plan.name}
         </CardTitle>
-        <p className="text-xs text-muted-foreground text-center">{plan.limits}</p>
+        <p className="text-xs text-muted-foreground text-center">{plan.limits.replace("Upto ", "")}</p> {/* Removed "Upto" here as well for consistency */}
         <div className="text-center mt-2">
           <span className="text-3xl sm:text-4xl font-bold font-headline text-dynamic-accent">
             ₹{Math.round(displayPricePerMonth)}
@@ -104,10 +102,19 @@ export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCard
         </ul>
       </CardContent>
       <CardFooter className="grid grid-cols-2 gap-2 sm:gap-3 p-4 bg-muted/20 mt-auto">
-        <Button variant="outline" className="w-full border-dynamic-accent text-dynamic-accent hover:bg-dynamic-accent/10" onClick={handleKnowMore}>
-          <Info className="mr-1.5 h-4 w-4" /> Know More
+        <Button 
+            size="sm" 
+            variant="outline" 
+            className="w-full border-dynamic-accent text-dynamic-accent hover:bg-dynamic-accent/10 text-xs sm:text-sm" 
+            onClick={handleKnowMore}
+        >
+          <Info className="mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4" /> Know More
         </Button>
-        <Button className="w-full bg-dynamic-accent text-dynamic-accent-foreground hover:bg-dynamic-accent/90" onClick={handleSubscribe}>
+        <Button 
+            size="sm" 
+            className="w-full bg-dynamic-accent text-dynamic-accent-foreground hover:bg-dynamic-accent/90 text-xs sm:text-sm" 
+            onClick={handleSubscribe}
+        >
            Subscribe Now
         </Button>
       </CardFooter>

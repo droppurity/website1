@@ -23,24 +23,25 @@ export default function PlanTypeSelector({
     <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
       {plans.map((plan) => {
         const isSelected = plan.id === selectedPlanId;
+        const limitText = plan.limits.replace("Upto ", "");
         return (
           <Button
             key={plan.id}
             variant={isSelected ? "default" : "outline"}
             onClick={() => onSelectPlan(plan.id)}
-            className={`h-auto px-4 py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 text-sm font-medium
+            className={`h-auto px-3 py-2 sm:px-4 sm:py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 
               ${isSelected 
                 ? 'bg-dynamic-accent text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent' 
                 : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground'
               }
             `}
-             style={{minWidth: '100px'}} // Ensure buttons have some minimum width
+             style={{minWidth: '100px'}} 
           >
-            {plan.name} ({plan.limits})
+            <span className="text-sm font-medium">{plan.name}</span>
+            <span className="text-xs text-muted-foreground/80 ml-1">({limitText})</span>
           </Button>
         );
       })}
     </div>
   );
 }
-

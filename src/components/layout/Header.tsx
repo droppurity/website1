@@ -20,10 +20,10 @@ export default function Header() {
   return (
     <header className="bg-card shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14"> {/* Reduced height from h-16 to h-14 */}
           <Link href="/" className="flex items-center gap-2">
-            <Droplet className="w-8 h-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">Droppurity</span>
+            <Droplet className="w-7 h-7 sm:w-8 sm:h-8 text-primary" /> {/* Slightly smaller icon for smaller header */}
+            <span className="text-lg sm:text-xl font-bold text-foreground">Droppurity</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,9 +46,8 @@ export default function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full max-w-xs bg-card p-0"> {/* Removed default padding */}
+              <SheetContent side="right" className="w-full max-w-xs bg-card p-0">
                 <div className="flex flex-col h-full">
-                  {/* Header section within the sheet */}
                   <div className="flex items-center p-4 border-b">
                     <SheetTitle asChild>
                       <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
@@ -56,7 +55,6 @@ export default function Header() {
                         <span className="text-lg font-bold text-foreground">Droppurity</span>
                       </Link>
                     </SheetTitle>
-                    {/* Custom X button removed, SheetContent provides its own */}
                   </div>
                   <nav className="flex flex-col gap-2 p-4 flex-grow overflow-y-auto">
                     {navItems.map((item) => (
