@@ -16,17 +16,22 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <div className="w-full flex flex-nowrap items-start gap-2 sm:gap-3 mb-4 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar pb-1 md:pb-0 px-1 md:px-0 pt-3 md:pt-0">
+    // Main container for horizontal scrolling on mobile, wrapping on desktop.
+    // Removed px-1 md:px-0 to use full width from parent.
+    <div className="w-full flex flex-nowrap items-start gap-2 sm:gap-3 mb-4 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar pb-1 md:pb-0 pt-3 md:pt-0">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
 
+        // Split name for two-line display on mobile
         const nameParts = purifier.name.split(' ');
         const brandName = nameParts[0]; // e.g., "Droppurity"
         const modelName = nameParts.slice(1).join(' '); // e.g., "RO+", "Copper"
 
         return (
+          // Container for each button and its optional tagline
           <div key={purifier.id} className="relative flex-shrink-0 text-center">
+            {/* Tagline: Appears above the selected button */}
             {isSelected && purifier.tagline && (
               <div className="absolute -top-0 md:-top-1 left-1/2 -translate-x-1/2 z-10" style={{minWidth: 'max-content'}}>
                 <span className="inline-flex items-center px-2 py-0.5 md:px-2.5 rounded-full text-[10px] leading-tight md:text-xs font-semibold bg-primary text-primary-foreground shadow-md whitespace-nowrap">
@@ -45,7 +50,8 @@ export default function PurifierSelector({
                 }
               `}
             >
-              <div className="flex flex-col items-center text-center min-w-[60px] md:min-w-0">
+              {/* Inner container for two-line text */}
+              <div className="flex flex-col items-center text-center min-w-[60px] md:min-w-0"> {/* min-w-[60px] for mobile to prevent squishing */}
                 <span className="text-xs md:text-sm font-medium whitespace-nowrap">{brandName}</span>
                 {modelName && (
                   <span className="text-[11px] md:text-xs font-medium whitespace-nowrap leading-tight">{modelName}</span>
@@ -58,4 +64,3 @@ export default function PurifierSelector({
     </div>
   );
 }
-
