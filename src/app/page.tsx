@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Shield, Sparkles } from 'lucide-react';
+import PlanSelectionSection from '@/components/droppurity/PlanSelectionSection';
 
 const features = [
   {
@@ -104,6 +105,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <PlanSelectionSection />
 
       {/* Call to Action Section */}
       <section className="py-16 sm:py-24 bg-background">
