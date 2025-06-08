@@ -16,7 +16,7 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <div className="w-full flex flex-nowrap items-center gap-2 sm:gap-3 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar">
+    <div className="w-full flex flex-nowrap items-center justify-center gap-2 sm:gap-3 overflow-x-auto md:flex-wrap no-scrollbar">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
@@ -38,7 +38,7 @@ export default function PurifierSelector({
             <Button
               variant={isSelected ? "default" : "outline"}
               onClick={() => onSelectPurifier(purifier.id)}
-              className={`h-auto px-2 py-1.5 md:px-4 md:py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 
+              className={`h-auto px-2 py-1 md:px-3 md:py-2 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 
                 ${isSelected 
                   ? 'bg-gradient-to-br from-gradient-start to-gradient-end text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent mt-3 md:mt-2' 
                   : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground mt-3 md:mt-2'
@@ -46,9 +46,9 @@ export default function PurifierSelector({
               `}
             >
               <div className="flex flex-col items-center text-center">
-                <span className="text-xs md:text-sm font-medium whitespace-nowrap">{brandName}</span>
+                <span className="text-[10px] leading-tight md:text-xs font-medium whitespace-nowrap">{brandName}</span>
                 {modelName && (
-                  <span className="text-[10px] md:text-xs font-medium whitespace-nowrap leading-tight">{modelName}</span>
+                  <span className="text-[9px] leading-tight md:text-[10px] font-medium whitespace-nowrap">{modelName}</span>
                 )}
               </div>
             </Button>
