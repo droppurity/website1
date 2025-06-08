@@ -133,7 +133,7 @@ export default function PlanSelectionSection() {
 
   const displayPurifierPlanName = useMemo(() => {
     if (selectedPurifier && selectedPlan) {
-      if (selectedPurifier.name === "Droppurity RO+" && selectedPlan.name === "Value") {
+      if (selectedPurifier.id === "droppurity-ro-plus" && selectedPlan.name === "Value") {
         return "- value fix";
       }
       return `${selectedPurifier.name} - ${selectedPlan.name}`;
@@ -154,7 +154,7 @@ export default function PlanSelectionSection() {
             </p>
         </header>
 
-        <div className="mb-8 sm:mb-12">
+        <div className="sticky top-16 bg-background z-40 pt-4 pb-1 shadow-sm mb-6 sm:mb-10">
           <PurifierSelector
             purifiers={purifiers}
             selectedPurifierId={selectedPurifierId}
@@ -168,7 +168,7 @@ export default function PlanSelectionSection() {
           </div>
 
           <div className="lg:col-span-3">
-            <Card className="shadow-xl sticky top-20">
+            <Card className="shadow-xl sticky top-36">
               <CardHeader>
                 <CardTitle className="font-headline text-xl text-foreground">Flexible Rental Plans</CardTitle>
                 <p className="text-sm text-muted-foreground">Security deposit of ₹1,500 will be 100% refundable.</p>
@@ -232,3 +232,4 @@ export default function PlanSelectionSection() {
     </div>
   );
 }
+
