@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Droplet, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { useState } from 'react';
 
 const navItems = [
@@ -46,19 +46,19 @@ export default function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full max-w-xs bg-card">
+              <SheetContent side="right" className="w-full max-w-xs bg-card p-0"> {/* Removed default padding */}
                 <div className="flex flex-col h-full">
-                  <div className="flex justify-between items-center p-4 border-b">
-                    <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Droplet className="w-7 h-7 text-primary" />
-                      <span className="text-lg font-bold text-foreground">Droppurity</span>
-                    </Link>
-                    <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
-                      <X className="h-6 w-6" />
-                      <span className="sr-only">Close menu</span>
-                    </Button>
+                  {/* Header section within the sheet */}
+                  <div className="flex items-center p-4 border-b">
+                    <SheetTitle asChild>
+                      <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Droplet className="w-7 h-7 text-primary" />
+                        <span className="text-lg font-bold text-foreground">Droppurity</span>
+                      </Link>
+                    </SheetTitle>
+                    {/* Custom X button removed, SheetContent provides its own */}
                   </div>
-                  <nav className="flex flex-col gap-2 p-4">
+                  <nav className="flex flex-col gap-2 p-4 flex-grow overflow-y-auto">
                     {navItems.map((item) => (
                       <Button
                         key={item.label}
