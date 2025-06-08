@@ -47,7 +47,7 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
 
   if (!purifier || features.length === 0) {
     return (
-      <div className={`w-full mx-auto mt-1 mb-2 md:mt-2 md:mb-3 p-2 text-center text-sm text-muted-foreground ${className}`}> {/* Adjusted margins */}
+      <div className={`w-full mx-auto mt-2 p-2 text-center text-sm text-muted-foreground ${className}`}>
         {purifier ? 'No specific key features listed for this purifier.' : 'Select a purifier to see its features.'}
       </div>
     );
@@ -55,7 +55,7 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
 
 
   return (
-    <div className={`w-full mx-auto mt-1 mb-2 md:mt-2 md:mb-3 ${className}`}> {/* Adjusted margins */}
+    <div className={`w-full mx-auto mt-2 ${className}`}>
       {isMobile && features.length > 0 ? (
         <div className="h-[40px] flex items-center justify-center overflow-hidden px-2"> 
              <AnimatedFeature
