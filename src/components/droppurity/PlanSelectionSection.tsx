@@ -142,8 +142,10 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
-  const stickyHeaderTopClass = headerVisible ? 'top-14' : 'top-0'; // Main header is h-14 (3.5rem)
-  const stickyCardTopClass = headerVisible ? 'top-[9.5rem]' : 'top-[6rem]';
+  // Main header is h-14 (3.5rem)
+  // Sticky selector bar approx height is ~7rem
+  const stickyHeaderTopClass = headerVisible ? 'top-14' : 'top-0'; 
+  const stickyCardTopClass = headerVisible ? 'top-[10.5rem]' : 'top-[7rem]';
 
 
   return (
@@ -165,7 +167,7 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
-          <KeyFeaturesDisplay purifier={selectedPurifier} />
+          <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
