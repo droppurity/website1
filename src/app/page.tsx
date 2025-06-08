@@ -1,106 +1,124 @@
 
 "use client";
 
-import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId } from '@/config/siteData';
-import type { Purifier, TenureOption, Plan } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CheckCircle, Shield, Sparkles } from 'lucide-react';
 
-import PurifierSelector from '@/components/droppurity/PurifierSelector';
-import TenureSelector from '@/components/droppurity/TenureSelector';
-import PlanCard from '@/components/droppurity/PlanCard';
-import KeyFeaturesDisplay from '@/components/droppurity/KeyFeaturesDisplay';
-import { Separator } from '@/components/ui/separator';
-import { Droplet } from 'lucide-react'; // App icon
+const features = [
+  {
+    icon: CheckCircle,
+    title: "Advanced Purification",
+    description: "Multi-stage RO+UV+UF purification for 100% safe water.",
+    color: "text-green-500",
+  },
+  {
+    icon: Shield,
+    title: "Trusted Quality",
+    description: "Reliable service and high-quality purifiers for your peace of mind.",
+    color: "text-blue-500",
+  },
+  {
+    icon: Sparkles,
+    title: "Healthy Water",
+    description: "Retains essential minerals, ensuring your water is not just pure, but healthy too.",
+    color: "text-yellow-500",
+  },
+];
 
-export default function DroppurityPlansPage() {
-  const [selectedPurifierId, setSelectedPurifierId] = useState<string>(defaultPurifierId);
-  const [selectedTenureId, setSelectedTenureId] = useState<string>(defaultTenureId);
-
-  const selectedPurifier = useMemo(
-    () => purifiers.find(p => p.id === selectedPurifierId) || purifiers[0],
-    [selectedPurifierId]
-  );
-
-  const selectedTenure = useMemo(
-    () => tenureOptions.find(t => t.id === selectedTenureId) || tenureOptions[0],
-    [selectedTenureId]
-  );
-
-  const themeAccentClass = useMemo(() => {
-    if (selectedPurifier.accentColor === 'copper') return 'theme-copper';
-    if (selectedPurifier.accentColor === 'teal') return 'theme-teal';
-    return ''; // Default blue is handled by root CSS vars
-  }, [selectedPurifier.accentColor]);
-
-  const plansToShow = selectedPurifier.plans;
-
+export default function HomePage() {
   return (
-    <div className={`min-h-screen flex flex-col items-center ${themeAccentClass} py-6 sm:py-8 px-4`}>
-      <header className="text-center mb-6 sm:mb-10">
-        <div className="flex items-center justify-center mb-2">
-          <Droplet className="w-10 h-10 text-primary mr-2" />
-          <h1 className="text-3xl sm:text-4xl font-bold font-headline text-foreground">
-            Droppurity Plans
-          </h1>
+    <div className="flex flex-col">
+      {/* Hero Section */}
+      <section className="relative py-20 sm:py-32 bg-gradient-to-br from-primary/20 via-background to-background">
+        <div className="absolute inset-0 opacity-30">
+          <Image
+            src="https://placehold.co/1920x1080.png"
+            alt="Abstract water background"
+            layout="fill"
+            objectFit="cover"
+            className="opacity-50"
+            data-ai-hint="abstract water"
+            priority
+          />
         </div>
-        <p className="text-base sm:text-lg text-muted-foreground">
-          Choose the perfect water purifier plan for your home or business.
-        </p>
-      </header>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+            Pure Water, <span className="text-primary">Pure Life.</span>
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            Experience the Droppurity difference. Clean, safe, and healthy water for everyone, with flexible plans to suit your needs.
+          </p>
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
+            <Link href="/plans">Explore Our Plans</Link>
+          </Button>
+        </div>
+      </section>
 
-      <main className="w-full max-w-6xl mx-auto">
-        <section className="mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl font-semibold font-headline text-center mb-4 text-foreground">
-            1. Select Your Purifier
+      {/* Features Overview Section */}
+      <section className="py-16 sm:py-24 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-center mb-12 sm:mb-16 text-foreground">
+            Why Choose Droppurity?
           </h2>
-          <PurifierSelector
-            purifiers={purifiers}
-            selectedPurifierId={selectedPurifierId}
-            onSelectPurifier={setSelectedPurifierId}
-          />
-        </section>
-        
-        <KeyFeaturesDisplay purifier={selectedPurifier} />
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader className="items-center text-center">
+                  <feature.icon className={`w-12 h-12 mb-4 ${feature.color}`} />
+                  <CardTitle className="text-xl font-headline">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        <Separator className="my-6 sm:my-8" />
-        
-        <section className="mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl font-semibold font-headline text-center mb-4 text-foreground">
-            2. Choose Your Tenure
+      {/* How It Works Section */}
+      <section className="py-16 sm:py-24 bg-secondary/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-center mb-12 sm:mb-16 text-foreground">
+            Simple Steps to Pure Water
           </h2>
-          <TenureSelector
-            tenureOptions={tenureOptions}
-            selectedTenureId={selectedTenureId}
-            onSelectTenure={setSelectedTenureId}
-          />
-        </section>
-
-        <section>
-          <h2 className="text-xl sm:text-2xl font-semibold font-headline text-center mb-6 text-foreground">
-            3. Pick Your Plan
-          </h2>
-          {plansToShow.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {plansToShow.map(plan => (
-                <PlanCard
-                  key={plan.id}
-                  plan={plan}
-                  tenure={selectedTenure}
-                  accentColorClass={`bg-${selectedPurifier.accentColor}-500`} 
-                />
-              ))}
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="flex flex-col items-center">
+              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-4">1</div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Choose Your Purifier</h3>
+              <p className="text-muted-foreground">Select from our range of high-quality purifiers.</p>
             </div>
-          ) : (
-            <p className="text-center text-muted-foreground">No plans available for this selection.</p>
-          )}
-        </section>
-      </main>
+            <div className="flex flex-col items-center">
+              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-4">2</div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Pick a Plan</h3>
+              <p className="text-muted-foreground">Opt for a flexible tenure that suits your budget.</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-4">3</div>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">Enjoy Pure Water</h3>
+              <p className="text-muted-foreground">We handle installation and maintenance for free.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <footer className="mt-10 sm:mt-16 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} Droppurity. All rights reserved.</p>
-        <p>Pure Water, Pure Life.</p>
-      </footer>
+      {/* Call to Action Section */}
+      <section className="py-16 sm:py-24 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-semibold mb-6 text-foreground">
+            Ready for an Upgrade to Purity?
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
+            Join thousands of happy customers enjoying the benefits of Droppurity water.
+          </p>
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg">
+            <Link href="/contact">Get in Touch</Link>
+          </Button>
+        </div>
+      </section>
     </div>
   );
 }
