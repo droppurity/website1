@@ -131,11 +131,21 @@ export default function PlanSelectionSection() {
     return ''; 
   }, [selectedPurifier.accentColor]);
 
+  const displayPurifierPlanName = useMemo(() => {
+    if (selectedPurifier && selectedPlan) {
+      if (selectedPurifier.name === "Droppurity RO+" && selectedPlan.name === "Value") {
+        return "- value fix";
+      }
+      return `${selectedPurifier.name} - ${selectedPlan.name}`;
+    }
+    return selectedPurifier?.name || ""; // Fallback if plan is not selected
+  }, [selectedPurifier, selectedPlan]);
+
   return (
     <div className={`${themeAccentClass} py-6 sm:py-10 bg-background`}>
       <div className="container mx-auto px-4">
         <header className="text-center mb-6 sm:mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold font-headline text-foreground flex items-center justify-center"> {/* Changed to h2 for semantic hierarchy on homepage */}
+            <h2 className="text-3xl sm:text-4xl font-bold font-headline text-foreground flex items-center justify-center">
               <Droplet className="w-8 h-8 sm:w-10 sm:h-10 text-primary mr-2" />
               Choose Your Droppurity Plan
             </h2>
@@ -197,7 +207,7 @@ export default function PlanSelectionSection() {
                   <PlanCard
                     plan={selectedPlan}
                     tenure={selectedTenure}
-                    displayPurifierName={`${selectedPurifier.name} - ${selectedPlan.name}`}
+                    displayPurifierName={displayPurifierPlanName}
                   />
                 ) : (
                   <div className="text-center text-muted-foreground py-8">
