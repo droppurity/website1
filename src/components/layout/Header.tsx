@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Droplet, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -16,47 +16,15 @@ const navItems = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showHeader, setShowHeader] = useState(true);
-  const lastScrollY = useRef(0);
-
-  const HEADER_HEIGHT_THRESHOLD = 56; // Approx 3.5rem (h-14 value)
-
-  useEffect(() => {
-    const controlHeaderVisibility = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY === 0) {
-        setShowHeader(true);
-        lastScrollY.current = 0;
-        return;
-      }
-
-      if (currentScrollY > lastScrollY.current && currentScrollY > HEADER_HEIGHT_THRESHOLD) {
-        setShowHeader(false);
-      } else if (currentScrollY < lastScrollY.current) {
-        setShowHeader(true);
-      }
-      lastScrollY.current = currentScrollY;
-    };
-
-    if (typeof window !== "undefined") {
-      window.addEventListener('scroll', controlHeaderVisibility, { passive: true });
-      return () => {
-        window.removeEventListener('scroll', controlHeaderVisibility);
-      };
-    }
-  }, []); // Empty dependency array ensures this runs once on mount and cleans up on unmount
 
   return (
     <header
-      className={`bg-card shadow-sm sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
-        showHeader ? 'transform-none' : '-translate-y-full'
-      }`}
+      className="bg-card shadow-sm sticky top-0 z-50" // Removed transition and transform classes
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14"> {/* Reduced height from h-16 to h-14 */}
+        <div className="flex items-center justify-between h-14">
           <Link href="/" className="flex items-center gap-2">
-            <Droplet className="w-7 h-7 sm:w-8 sm:h-8 text-primary" /> {/* Slightly smaller icon for smaller header */}
+            <Droplet className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
             <span className="text-lg sm:text-xl font-bold text-foreground">Droppurity</span>
           </Link>
 
