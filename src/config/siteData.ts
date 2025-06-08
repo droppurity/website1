@@ -1,57 +1,110 @@
 
-import type { Purifier, TenureOption, Feature, Plan } from '@/lib/types';
-import { Layers, Zap, Sparkles, ShieldCheck, Atom, Filter, Droplet, CheckCircle, Star, Lock, HelpCircle, LayoutGrid, Check } from 'lucide-react';
+import type { Purifier, TenureOption, Feature, Plan, PlanPriceDetail } from '@/lib/types';
+import { Sparkles, Star, Check, Atom } from 'lucide-react';
 
-// Tenure Options based on the image
+// Updated Tenure Options
 export const tenureOptions: TenureOption[] = [
-  { id: '28d', durationDays: 28, displayName: '28 days' },
-  { id: '90d', durationDays: 90, displayName: '90 days', discountPercent: 5, lockInNote: '3 Month Lock-in' },
-  { id: '360d', durationDays: 360, displayName: '360 days', discountPercent: 10 },
+  { id: '28d', durationDays: 28, durationMonths: 1, displayName: '28 days' },
+  { id: '7m', durationDays: 210, durationMonths: 7, displayName: '7 Months', lockInNote: '7 Month Lock-in' },
+  { id: '12m', durationDays: 360, durationMonths: 12, displayName: '12 Months', lockInNote: '12 Month Lock-in' },
 ];
 
-// Common key features that might appear across purifiers, simplified to match image style
 const commonFeaturesList: Feature[] = [
   { id: 'multi-stage', name: 'Multistage Universal Water purifier', icon: Check },
   { id: 'ro-purification', name: 'RO Purification', icon: Check },
   { id: 'inline-uv', name: 'In-line UV purification', icon: Check },
 ];
 
-const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness of copper', icon: Check };
+const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness of copper', icon: Atom };
 const alkalineSpecificFeature: Feature = { id: 'alkaline-ph', name: 'Alkaline pH Boost', icon: Check };
 
-
-// Plans now represent usage tiers like Solo, Couple, Family
-const soloPlanFeatures = ['Upto 130 ltrs/m usage', 'Free installation', 'Regular maintenance'];
-const couplePlanFeatures = ['Upto 200 ltrs/m usage', 'Free installation', 'Priority maintenance'];
-const familyPlanFeatures = ['Upto 500 ltrs/m usage', 'Free installation', 'Premium support'];
-const unlimitedPlanFeatures = ['Unlimited usage', 'Free installation', 'VIP support'];
-
-
-const basePlans: Omit<Plan, 'id' | 'pricePerMonth'>[] = [
-  { name: 'Solo', limits: '130 ltrs/m', features: soloPlanFeatures, pillText: 'SOLO' },
-  { name: 'Couple', limits: '200 ltrs/m', features: couplePlanFeatures, pillText: 'COUPLE', recommended: true},
-  { name: 'Family', limits: '500 ltrs/m', features: familyPlanFeatures, pillText: 'FAMILY' },
-  { name: 'Unlimited', limits: 'Unlimited ltrs/m', features: unlimitedPlanFeatures, pillText: 'UNLIMITED' },
+// Base Plan Structures (features, limits) - Pricing will be per purifier
+const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText'>[] = [
+  {
+    name: 'Basic',
+    limits: 'Upto 150 ltrs/m',
+    baseFeatures: ['Free installation', 'Regular maintenance', 'Free relocation'],
+  },
+  {
+    name: 'Value',
+    limits: 'Upto 250 ltrs/m',
+    baseFeatures: ['Free installation', 'Priority maintenance', 'Biannual filter change', 'Free relocation'],
+    recommended: true,
+  },
+  {
+    name: 'Commercial',
+    limits: 'Upto 500 ltrs/m',
+    baseFeatures: ['Free installation', 'Express maintenance', 'Quarterly filter change', 'Dedicated support line', 'Free relocation'],
+  },
 ];
 
-
-// Function to generate plans for each purifier type with slight price variations
-const generatePurifierPlans = (purifierIdPrefix: string, basePrice: number): Plan[] => {
-  return basePlans.map((plan, index) => ({
-    ...plan,
-    id: `${purifierIdPrefix}-${plan.name.toLowerCase()}`,
-    pricePerMonth: basePrice + (index * 50), // Example price increment
-  }));
+// Pricing for Droppurity RO+ (Base Prices)
+const roPlusPricing: { [planName: string]: { [tenureId: string]: PlanPriceDetail } } = {
+  Basic: {
+    '28d': { pricePerMonth: 449 },
+    '7m': { pricePerMonth: 299 },
+    '12m': { pricePerMonth: 299, payingMonths: 11, additionalFeatures: ["+1 month free"] },
+  },
+  Value: { // Placeholder pricing for Value
+    '28d': { pricePerMonth: 549 },
+    '7m': { pricePerMonth: 399 },
+    '12m': { pricePerMonth: 399, payingMonths: 11, additionalFeatures: ["+1 month free"] },
+  },
+  Commercial: { // Placeholder pricing for Commercial
+    '28d': { pricePerMonth: 749 },
+    '7m': { pricePerMonth: 599 },
+    '12m': { pricePerMonth: 549, payingMonths: 10, additionalFeatures: ["+2 months free"] },
+  },
 };
 
+// Function to generate plans for a specific purifier by applying price increments
+const generatePlansForPurifier = (
+  purifierIdPrefix: string,
+  priceIncrement: number
+): Plan[] => {
+  return basePlanDefinitions.map(basePlanDef => {
+    const planPricing: { [tenureId: string]: PlanPriceDetail } = {};
+    const basePurifierPlanPricing = roPlusPricing[basePlanDef.name];
+
+    for (const tenureId in basePurifierPlanPricing) {
+      const originalPriceDetail = basePurifierPlanPricing[tenureId];
+      planPricing[tenureId] = {
+        ...originalPriceDetail,
+        pricePerMonth: originalPriceDetail.pricePerMonth + priceIncrement,
+      };
+    }
+
+    return {
+      ...basePlanDef,
+      id: `${purifierIdPrefix}-${basePlanDef.name.toLowerCase()}`,
+      pillText: basePlanDef.name.toUpperCase(),
+      tenurePricing: planPricing,
+    };
+  });
+};
 
 export const purifiers: Purifier[] = [
+  {
+    id: 'droppurity-ro-plus',
+    name: 'Droppurity RO+',
+    plans: generatePlansForPurifier('ro-plus', 0), // No increment for base RO+
+    image: 'https://placehold.co/400x400.png',
+    thumbnailImages: [
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+    ],
+    storageCapacity: '8 Litre Storage',
+    keyFeatures: commonFeaturesList,
+    accentColor: 'blue',
+    dataAiHint: 'ro water purifier',
+  },
   {
     id: 'droppurity-copper',
     name: 'Droppurity Copper',
     tagline: 'Bestseller',
     taglineIcon: Sparkles,
-    plans: generatePurifierPlans('copper', 449), // Base price for Copper Solo
+    plans: generatePlansForPurifier('copper', 85), // +85 for Copper
     image: 'https://placehold.co/400x400.png',
     thumbnailImages: [
         'https://placehold.co/100x100.png',
@@ -64,26 +117,11 @@ export const purifiers: Purifier[] = [
     dataAiHint: 'copper water purifier',
   },
   {
-    id: 'droppurity-ro-plus',
-    name: 'Droppurity RO+',
-    plans: generatePurifierPlans('ro', 399), // Base price for RO+ Solo
-    image: 'https://placehold.co/400x400.png',
-     thumbnailImages: [
-        'https://placehold.co/100x100.png',
-        'https://placehold.co/100x100.png',
-        'https://placehold.co/100x100.png',
-    ],
-    storageCapacity: '8 Litre Storage',
-    keyFeatures: commonFeaturesList,
-    accentColor: 'blue',
-    dataAiHint: 'ro water purifier',
-  },
-  {
     id: 'droppurity-alkaline',
     name: 'Droppurity Alkaline',
     tagline: 'Popular choice',
     taglineIcon: Star,
-    plans: generatePurifierPlans('alkaline', 499), // Base price for Alkaline Solo
+    plans: generatePlansForPurifier('alkaline', 75), // +75 for Alkaline
     image: 'https://placehold.co/400x400.png',
      thumbnailImages: [
         'https://placehold.co/100x100.png',
@@ -97,5 +135,5 @@ export const purifiers: Purifier[] = [
   },
 ];
 
-export const defaultPurifierId = purifiers[0].id;
-export const defaultTenureId = tenureOptions[1].id; // Default to 90 days
+export const defaultPurifierId = purifiers[0].id; // Default to Droppurity RO+
+export const defaultTenureId = tenureOptions[1].id; // Default to 7 Months

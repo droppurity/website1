@@ -4,40 +4,47 @@ import type { LucideIcon } from 'lucide-react';
 export interface Feature {
   id: string;
   name: string;
-  icon?: LucideIcon | React.ElementType; // Retaining icon for flexibility, though plan page will use Check
+  icon?: LucideIcon | React.ElementType;
   description?: string;
+}
+
+export interface PlanPriceDetail {
+  pricePerMonth: number;
+  payingMonths?: number; // How many months are actually paid for this tenure. If undefined, defaults to tenure.durationMonths
+  additionalFeatures?: string[]; // e.g., ["+1 month free"]
+  savingsText?: string; // Optional: custom text for savings, e.g. "Best Value!"
 }
 
 export interface Plan {
   id: string;
-  name: string;
-  pricePerMonth: number;
-  limits: string; // e.g., "Upto 130 ltrs/m"
-  savings?: string;
-  features: string[];
+  name: string; // "Basic", "Value", "Commercial"
+  tenurePricing: {
+    [tenureId: string]: PlanPriceDetail; // Keyed by tenureOption.id
+  };
+  baseFeatures: string[]; // Features common to this plan regardless of tenure
+  limits: string; // e.g., "Upto 150 ltrs/m"
   recommended?: boolean;
-  pillText?: string; // e.g. "SOLO", "COUPLE" - this might be different from purifier tagline
-  themeColor?: 'blue' | 'teal' | 'copper';
+  pillText?: string; // e.g. "BASIC", "VALUE"
 }
 
 export interface TenureOption {
   id: string;
-  durationDays: number; // Using days as per image
-  displayName: string; // e.g., "28 days"
-  discountPercent?: number;
-  lockInNote?: string; // e.g., "3 Month Lock-in"
+  durationDays: number;
+  durationMonths: number; // For easier calculation of total costs/savings over the period
+  displayName: string;
+  lockInNote?: string;
 }
 
 export interface Purifier {
   id: string;
-  name: string; // e.g., "DrinkPrime Copper"
-  plans: Plan[]; // These are the "Solo", "Couple", "Family" type plans
+  name: string;
+  plans: Plan[];
   image: string;
   thumbnailImages?: string[];
-  storageCapacity?: string; // e.g., "8 Litre Storage"
-  keyFeatures: Feature[]; // Features like "Multistage Universal Water purifier"
+  storageCapacity?: string;
+  keyFeatures: Feature[];
   accentColor: 'blue' | 'teal' | 'copper';
   dataAiHint?: string;
-  tagline?: string; // e.g., "Bestseller", "Popular choice"
+  tagline?: string;
   taglineIcon?: LucideIcon | React.ElementType;
 }
