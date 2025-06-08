@@ -126,7 +126,7 @@ export default function DroppurityPlansPage() {
 
                 <div>
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">1. Select Your Purifier</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Select Your Purifier</h3>
                   </div>
                   <PurifierSelector
                     purifiers={purifiers}
@@ -140,7 +140,7 @@ export default function DroppurityPlansPage() {
 
                 <div>
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">2. Choose Your Tenure</h3>
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Choose Your Tenure</h3>
                     {/* <Button variant="ghost" size="sm" className="text-xs text-primary hover:text-primary/80">
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
                     </Button> */}
@@ -152,8 +152,6 @@ export default function DroppurityPlansPage() {
                   />
                 </div>
                 
-                {/* Plan Cards will be shown based on selected purifier's plans */}
-                {/* This section is for displaying the plans themselves */}
               </CardContent>
             </Card>
           </div>
@@ -163,7 +161,7 @@ export default function DroppurityPlansPage() {
         <section className="mt-8 sm:mt-12">
           <div className="flex justify-between items-center mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl font-semibold font-headline text-center sm:text-left text-foreground">
-              3. Pick Your Plan ({selectedPurifier.name} - {selectedTenure.displayName})
+              2. Pick Your Plan ({selectedPurifier.name} - {selectedTenure.displayName})
             </h2>
             <Button variant="outline" size="sm" className="hidden sm:inline-flex text-dynamic-accent border-dynamic-accent hover:bg-dynamic-accent/10">
               <LayoutGrid className="w-4 h-4 mr-2" /> Help me choose

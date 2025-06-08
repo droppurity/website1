@@ -47,8 +47,8 @@ const generatePurifierPlans = (purifierIdPrefix: string, basePrice: number): Pla
 
 export const purifiers: Purifier[] = [
   {
-    id: 'drinkprime-copper',
-    name: 'DrinkPrime Copper',
+    id: 'droppurity-copper',
+    name: 'Droppurity Copper',
     tagline: 'Bestseller',
     taglineIcon: Sparkles,
     plans: generatePurifierPlans('copper', 449), // Base price for Copper Solo
@@ -64,8 +64,8 @@ export const purifiers: Purifier[] = [
     dataAiHint: 'copper water purifier',
   },
   {
-    id: 'drinkprime-ro-plus',
-    name: 'DrinkPrime RO+',
+    id: 'droppurity-ro-plus',
+    name: 'Droppurity RO+',
     plans: generatePurifierPlans('ro', 399), // Base price for RO+ Solo
     image: 'https://placehold.co/400x400.png',
      thumbnailImages: [
@@ -79,8 +79,8 @@ export const purifiers: Purifier[] = [
     dataAiHint: 'ro water purifier',
   },
   {
-    id: 'drinkprime-alkaline',
-    name: 'DrinkPrime Alkaline',
+    id: 'droppurity-alkaline',
+    name: 'Droppurity Alkaline',
     tagline: 'Popular choice',
     taglineIcon: Star,
     plans: generatePurifierPlans('alkaline', 499), // Base price for Alkaline Solo
