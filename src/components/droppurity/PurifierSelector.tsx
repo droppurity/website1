@@ -17,7 +17,8 @@ export default function PurifierSelector({
 }: PurifierSelectorProps) {
   return (
     // Main container for horizontal scrolling on mobile, wrapping on desktop.
-    <div className="w-full flex flex-nowrap items-start gap-2 sm:gap-3 mb-4 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar pb-1 md:pb-0 pt-3 md:pt-0">
+    // Removed mb-4, pb-1 md:pb-0, pt-3 md:pt-0 from here. Changed items-start to items-center.
+    <div className="w-full flex flex-nowrap items-center gap-2 sm:gap-3 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
@@ -32,8 +33,8 @@ export default function PurifierSelector({
           <div key={purifier.id} className="relative flex-shrink-0 text-center">
             {/* Tagline: Appears above the selected button */}
             {isSelected && purifier.tagline && (
-              <div className="absolute -top-0 md:-top-1 left-1/2 -translate-x-1/2 z-10" style={{minWidth: 'max-content'}}>
-                <span className="inline-flex items-center px-2 py-0.5 md:px-2.5 rounded-full text-[10px] leading-tight md:text-xs font-semibold bg-primary text-primary-foreground shadow-md whitespace-nowrap">
+              <div className="absolute -top-0 md:-top-1 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap" style={{minWidth: 'max-content'}}>
+                <span className="inline-flex items-center px-2 py-0.5 md:px-2.5 rounded-full text-[10px] leading-tight md:text-xs font-semibold bg-primary text-primary-foreground shadow-md">
                   {TaglineIcon && <TaglineIcon className="w-2.5 h-2.5 md:w-3 md:h-3 mr-0.5 md:mr-1 flex-shrink-0" />}
                   {purifier.tagline}
                 </span>
@@ -50,7 +51,7 @@ export default function PurifierSelector({
               `}
             >
               {/* Inner container for two-line text */}
-              <div className="flex flex-col items-center text-center md:min-w-0"> {/* Removed min-w-[60px] for mobile */}
+              <div className="flex flex-col items-center text-center"> {/* Removed min-w-[X] */}
                 <span className="text-xs md:text-sm font-medium whitespace-nowrap">{brandName}</span>
                 {modelName && (
                   <span className="text-[11px] md:text-xs font-medium whitespace-nowrap leading-tight">{modelName}</span>
