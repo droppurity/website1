@@ -17,7 +17,6 @@ export default function PurifierSelector({
 }: PurifierSelectorProps) {
   return (
     // Main container for horizontal scrolling on mobile, wrapping on desktop.
-    // Removed px-1 md:px-0 to use full width from parent.
     <div className="w-full flex flex-nowrap items-start gap-2 sm:gap-3 mb-4 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar pb-1 md:pb-0 pt-3 md:pt-0">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
@@ -51,7 +50,7 @@ export default function PurifierSelector({
               `}
             >
               {/* Inner container for two-line text */}
-              <div className="flex flex-col items-center text-center min-w-[60px] md:min-w-0"> {/* min-w-[60px] for mobile to prevent squishing */}
+              <div className="flex flex-col items-center text-center md:min-w-0"> {/* Removed min-w-[60px] for mobile */}
                 <span className="text-xs md:text-sm font-medium whitespace-nowrap">{brandName}</span>
                 {modelName && (
                   <span className="text-[11px] md:text-xs font-medium whitespace-nowrap leading-tight">{modelName}</span>
