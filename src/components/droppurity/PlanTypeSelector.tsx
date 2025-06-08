@@ -36,11 +36,11 @@ export default function PlanTypeSelector({
             `}
              style={{minWidth: '100px'}} // Ensure buttons have some minimum width
           >
-            {plan.name} {/* Display plan name e.g. Basic, Value, Commercial */}
-            {/* Removed redundant pillText display: plan.pillText && !isSelected && <span className="ml-1.5 text-xs opacity-70">({plan.pillText})</span> */}
+            {plan.name} ({plan.limits})
           </Button>
         );
       })}
     </div>
   );
 }
+
