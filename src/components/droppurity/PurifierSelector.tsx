@@ -16,7 +16,7 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <div className="w-full flex flex-nowrap items-center justify-center gap-2 sm:gap-3 overflow-x-auto md:flex-wrap no-scrollbar">
+    <div className="w-full flex items-center justify-center gap-1.5 sm:gap-2 overflow-x-auto md:flex-wrap no-scrollbar">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
@@ -38,7 +38,7 @@ export default function PurifierSelector({
             <Button
               variant={isSelected ? "default" : "outline"}
               onClick={() => onSelectPurifier(purifier.id)}
-              className={`h-auto px-2 py-1 md:px-3 md:py-2 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 
+              className={`h-auto px-1.5 py-1 md:px-3 md:py-2 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 
                 ${isSelected 
                   ? 'bg-gradient-to-br from-gradient-start to-gradient-end text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent mt-3 md:mt-2' 
                   : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground mt-3 md:mt-2'
