@@ -3,8 +3,10 @@ import PlanSelectionSection from '@/components/droppurity/PlanSelectionSection';
 
 export default function DroppurityPlansPage() {
   return (
-    <div className="min-h-screen"> {/* Ensure the dedicated plans page still takes up full screen height */}
-      <PlanSelectionSection />
+    // min-h-screen ensures that if content is short, the background color still fills the viewport.
+    // PlanSelectionSection will manage its own internal layout.
+    <div className="min-h-screen"> 
+      <PlanSelectionSection headerVisible={false} />
     </div>
   );
 }

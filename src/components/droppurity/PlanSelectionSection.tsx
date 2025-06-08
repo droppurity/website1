@@ -16,7 +16,10 @@ import { Button } from '@/components/ui/button';
 import { Droplet, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Enhanced PurifierImageDisplay with Carousel functionality
+interface PlanSelectionSectionProps {
+  headerVisible?: boolean;
+}
+
 function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const allImages = useMemo(() => (purifier.thumbnailImages && purifier.thumbnailImages.length > 0
     ? [purifier.image, ...purifier.thumbnailImages]
@@ -25,7 +28,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    setCurrentImageIndex(0); // Reset to first image when purifier changes
+    setCurrentImageIndex(0); 
   }, [purifier]);
 
   const handleThumbnailClick = (index: number) => {
@@ -92,7 +95,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
 }
 
 
-export default function PlanSelectionSection() {
+export default function PlanSelectionSection({ headerVisible = true }: PlanSelectionSectionProps) {
   const [selectedPurifierId, setSelectedPurifierId] = useState<string>(defaultPurifierId);
   const [selectedTenureId, setSelectedTenureId] = useState<string>(defaultTenureId);
   
@@ -139,8 +142,14 @@ export default function PlanSelectionSection() {
       }
       return `${selectedPurifier.name} - ${selectedPlan.name}`;
     }
-    return selectedPurifier?.name || ""; // Fallback if plan is not selected
+    return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
+
+  const stickyHeaderTopClass = headerVisible ? 'top-16' : 'top-0';
+  // Plan card sticky top: If header is visible, main header (4rem) + sticky selector part (approx 10rem based on prev top-56 being 14rem total from screen top) = 14rem (top-56)
+  // If header is not visible, sticky selector part (approx 10rem) = 10rem (top-40)
+  const stickyCardTopClass = headerVisible ? 'top-56' : 'top-40';
+
 
   return (
     <div className={`${themeAccentClass} py-6 sm:py-10 bg-background`}>
@@ -155,7 +164,7 @@ export default function PlanSelectionSection() {
             </p>
         </header>
 
-        <div className="sticky top-16 bg-background z-40 pt-4 pb-1 shadow-sm mb-6 sm:mb-10">
+        <div className={`sticky ${stickyHeaderTopClass} bg-background z-40 pt-4 pb-1 shadow-sm mb-6 sm:mb-10`}>
           <PurifierSelector
             purifiers={purifiers}
             selectedPurifierId={selectedPurifierId}
@@ -170,7 +179,7 @@ export default function PlanSelectionSection() {
           </div>
 
           <div className="lg:col-span-3">
-            <Card className="shadow-xl sticky top-56">
+            <Card className={`shadow-xl sticky ${stickyCardTopClass}`}>
               <CardHeader>
                 <CardTitle className="font-headline text-xl text-foreground">Flexible Rental Plans</CardTitle>
                 <p className="text-sm text-muted-foreground">Security deposit of ₹1,500 will be 100% refundable.</p>

@@ -106,7 +106,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <PlanSelectionSection />
+      <PlanSelectionSection headerVisible={true} />
 
       {/* Call to Action Section */}
       <section className="py-16 sm:py-24 bg-background">
