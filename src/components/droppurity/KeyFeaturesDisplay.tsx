@@ -6,10 +6,27 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useEffect, useState } from 'react';
 import AnimatedFeature from './AnimatedFeature';
 import { Card, CardContent } from '@/components/ui/card';
+import { Check } from 'lucide-react';
 
 interface KeyFeaturesDisplayProps {
   purifier?: Purifier;
 }
+
+function FeaturePill({ feature, accentIsPrimary }: { feature: Feature, accentIsPrimary: boolean }) {
+  const IconComponent = feature.icon || Check; // Default to Check icon
+  // For key features, they are usually positive, so a green check is standard
+  const iconColorClass = 'text-green-500'; 
+  const pillBgClass = 'bg-green-50';
+  const pillTextColorClass = 'text-green-700';
+
+  return (
+    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${pillBgClass} ${pillTextColorClass} shadow-sm`}>
+      <IconComponent className={`w-3.5 h-3.5 ${iconColorClass}`} />
+      <span>{feature.name}</span>
+    </div>
+  );
+}
+
 
 export default function KeyFeaturesDisplay({ purifier }: KeyFeaturesDisplayProps) {
   const isMobile = useIsMobile();
@@ -28,42 +45,30 @@ export default function KeyFeaturesDisplay({ purifier }: KeyFeaturesDisplayProps
     }
   }, [isMobile, features.length]);
 
-  if (!purifier) {
+  if (!purifier || features.length === 0) {
     return (
-      <div className="w-full max-w-4xl mx-auto my-6 p-4">
-        <p className="text-center text-muted-foreground">Select a purifier to see its features.</p>
+      <div className="w-full mx-auto my-4 p-2 text-center text-sm text-muted-foreground">
+        {purifier ? 'No specific key features listed for this purifier.' : 'Select a purifier to see its features.'}
       </div>
     );
   }
 
 
   return (
-    <div className="w-full max-w-4xl mx-auto my-6 md:my-8">
+    <div className="w-full mx-auto my-4 md:my-6">
       {isMobile && features.length > 0 ? (
-        <Card className="shadow-lg overflow-hidden">
-          <CardContent className="p-0 min-h-[180px] sm:min-h-[200px] flex items-center justify-center">
+        <div className="h-[50px] flex items-center justify-center overflow-hidden px-2">
              <AnimatedFeature
                 key={features[currentFeatureIndex].id}
                 feature={features[currentFeatureIndex]}
                 accentIsPrimary={accentIsPrimary}
               />
-          </CardContent>
-        </Card>
+        </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {features.map(feature => {
-            const IconComponent = feature.icon;
-            const iconColorClass = accentIsPrimary ? 'text-primary' : 'text-dynamic-accent';
-            return (
-              <Card key={feature.id} className="shadow-md hover:shadow-lg transition-shadow">
-                <CardContent className="flex flex-col items-center text-center p-4">
-                  {IconComponent && <IconComponent className={`w-8 h-8 mb-2 ${iconColorClass}`} />}
-                  <h3 className="text-sm font-semibold font-headline">{feature.name}</h3>
-                  {feature.description && <p className="text-xs text-muted-foreground mt-1">{feature.description}</p>}
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-2">
+          {features.map(feature => (
+            <FeaturePill key={feature.id} feature={feature} accentIsPrimary={accentIsPrimary} />
+          ))}
         </div>
       )}
     </div>

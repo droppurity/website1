@@ -2,7 +2,7 @@
 "use client";
 
 import type { Purifier } from "@/lib/types";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 interface PurifierSelectorProps {
@@ -17,26 +17,46 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <Tabs value={selectedPurifierId} onValueChange={onSelectPurifier} className="w-full max-w-xl mx-auto">
-      <TabsList className="grid w-full grid-cols-3 bg-secondary p-1 rounded-lg h-auto">
-        {purifiers.map((purifier) => (
-          <TabsTrigger
-            key={purifier.id}
-            value={purifier.id}
-            className="flex flex-col sm:flex-row items-center justify-center gap-2 px-2 py-3 data-[state=active]:bg-card data-[state=active]:text-dynamic-accent data-[state=active]:shadow-md rounded-md transition-all h-full"
-          >
-            <Image 
-              src={purifier.image} 
-              alt={purifier.name} 
-              width={24} 
-              height={24} 
-              className="h-6 w-6 sm:h-8 sm:w-8 object-contain"
-              data-ai-hint={purifier.dataAiHint}
-            />
-            <span className="text-xs sm:text-sm font-medium">{purifier.name}</span>
-          </TabsTrigger>
-        ))}
-      </TabsList>
-    </Tabs>
+    <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-4">
+      {purifiers.map((purifier) => {
+        const isSelected = purifier.id === selectedPurifierId;
+        const TaglineIcon = purifier.taglineIcon;
+        return (
+          <div key={purifier.id} className="relative">
+            {isSelected && purifier.tagline && (
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary text-primary-foreground shadow-md">
+                  {TaglineIcon && <TaglineIcon className="w-3 h-3 mr-1" />}
+                  {purifier.tagline}
+                </span>
+              </div>
+            )}
+            <Button
+              variant={isSelected ? "default" : "outline"}
+              onClick={() => onSelectPurifier(purifier.id)}
+              className={`h-auto px-4 py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2
+                ${isSelected 
+                  ? 'bg-dynamic-accent text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent' 
+                  : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground'
+                }
+              `}
+              style={{minWidth: '160px'}}
+            >
+              <div className="flex flex-col items-center text-center gap-1">
+                <Image 
+                  src={purifier.image} 
+                  alt={purifier.name} 
+                  width={20} 
+                  height={20} 
+                  className="h-5 w-5 object-contain"
+                  data-ai-hint={purifier.dataAiHint}
+                />
+                <span className="text-sm font-medium">{purifier.name}</span>
+              </div>
+            </Button>
+          </div>
+        );
+      })}
+    </div>
   );
 }

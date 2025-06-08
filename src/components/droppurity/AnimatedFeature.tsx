@@ -3,35 +3,38 @@
 
 import type { Feature } from '@/lib/types';
 import { useEffect, useState } from 'react';
+import { Check } from 'lucide-react';
 
 interface AnimatedFeatureProps {
   feature: Feature;
   className?: string;
-  accentIsPrimary: boolean;
+  accentIsPrimary: boolean; // Kept for potential future use, but currently overridden by green
 }
 
 export default function AnimatedFeature({ feature, className, accentIsPrimary }: AnimatedFeatureProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setVisible(false);
-    const timer = setTimeout(() => setVisible(true), 50);
+    setVisible(false); // Reset visibility for transition effect on feature change
+    const timer = setTimeout(() => setVisible(true), 50); // Small delay to trigger transition
     return () => clearTimeout(timer);
-  }, [feature]);
+  }, [feature]); // Re-run effect when feature changes
 
-  const IconComponent = feature.icon;
-  const iconColorClass = accentIsPrimary ? 'text-primary' : 'text-dynamic-accent';
+  const IconComponent = feature.icon || Check;
+  // Standard green for feature checkmarks
+  const iconColorClass = 'text-green-500';
+  const pillBgClass = 'bg-green-50';
+  const pillTextColorClass = 'text-green-700';
 
   return (
     <div
       className={`transition-all duration-500 ease-in-out transform ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       } ${className}`}
     >
-      <div className="flex flex-col items-center text-center p-2 sm:p-4">
-        {IconComponent && <IconComponent className={`w-8 h-8 sm:w-10 sm:h-10 mb-2 ${iconColorClass}`} />}
-        <h3 className="text-sm sm:text-base font-semibold font-headline">{feature.name}</h3>
-        {feature.description && <p className="text-xs text-muted-foreground mt-1 px-2">{feature.description}</p>}
+      <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${pillBgClass} ${pillTextColorClass} shadow-sm`}>
+        {IconComponent && <IconComponent className={`w-3.5 h-3.5 ${iconColorClass}`} />}
+        <span className="text-center">{feature.name}</span>
       </div>
     </div>
   );

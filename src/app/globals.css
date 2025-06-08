@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,11 +42,12 @@
     --radius: 0.75rem; /* More rounded corners */
 
     /* Dynamic accent colors */
-    --dynamic-accent-hsl: var(--primary); /* Default to primary blue HSL values */
-    --dynamic-accent-foreground-hsl: var(--primary-foreground);
+    /* Ensure these are HSL values without the 'hsl()' wrapper */
+    --dynamic-accent-hsl-values: 210 90% 55%; /* Default to primary blue HSL values */
+    --dynamic-accent-foreground-hsl-values: 0 0% 100%;
 
-    --dynamic-accent: hsl(var(--dynamic-accent-hsl));
-    --dynamic-accent-foreground: hsl(var(--dynamic-accent-foreground-hsl));
+    --dynamic-accent: hsl(var(--dynamic-accent-hsl-values));
+    --dynamic-accent-foreground: hsl(var(--dynamic-accent-foreground-hsl-values));
   }
 
   .dark {
@@ -77,18 +79,18 @@
     --input: 210 30% 30%;
     --ring: 210 90% 60%;
 
-    --dynamic-accent-hsl: var(--primary);
-    --dynamic-accent-foreground-hsl: var(--primary-foreground);
+    --dynamic-accent-hsl-values: 210 90% 60%;
+    --dynamic-accent-foreground-hsl-values: 220 30% 5%;
   }
 
   .theme-teal {
-    --dynamic-accent-hsl: 170 60% 45%;
-    --dynamic-accent-foreground-hsl: 0 0% 100%;
+    --dynamic-accent-hsl-values: 170 60% 45%;
+    --dynamic-accent-foreground-hsl-values: 0 0% 100%;
   }
 
   .theme-copper {
-    --dynamic-accent-hsl: 30 70% 50%;
-    --dynamic-accent-foreground-hsl: 0 0% 100%;
+    --dynamic-accent-hsl-values: 30 70% 50%; /* Example: A nice copper/orange */
+    --dynamic-accent-foreground-hsl-values: 0 0% 100%;
   }
 }
 

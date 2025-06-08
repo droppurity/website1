@@ -1,73 +1,101 @@
 
 import type { Purifier, TenureOption, Feature, Plan } from '@/lib/types';
-import { Layers, Zap, Sparkles, ShieldCheck, Atom, Filter, Droplet, CheckCircle } from 'lucide-react';
+import { Layers, Zap, Sparkles, ShieldCheck, Atom, Filter, Droplet, CheckCircle, Star, Lock, HelpCircle, LayoutGrid, Check } from 'lucide-react';
 
+// Tenure Options based on the image
 export const tenureOptions: TenureOption[] = [
-  { id: '6m', durationMonths: 6, displayName: '6 Months' },
-  { id: '12m', durationMonths: 12, displayName: '12 Months', discountPercent: 5 },
-  { id: '24m', durationMonths: 24, displayName: '24 Months', discountPercent: 10 },
+  { id: '28d', durationDays: 28, displayName: '28 days' },
+  { id: '90d', durationDays: 90, displayName: '90 days', discountPercent: 5, lockInNote: '3 Month Lock-in' },
+  { id: '360d', durationDays: 360, displayName: '360 days', discountPercent: 10 },
 ];
 
-const commonKeyFeatures: Feature[] = [
-  { id: 'multi-stage', name: 'Multistage Purification', icon: Layers, description: 'Advanced 7-stage purification process.' },
-  { id: 'smart-ro', name: 'Smart RO Technology', icon: Zap, description: 'Optimizes water recovery and reduces wastage.' },
-  { id: 'mineral-boost', name: 'Essential Minerals', icon: Sparkles, description: 'Retains essential minerals for healthy water.' },
-  { id: 'service', name: 'Free Lifetime Service', icon: ShieldCheck, description: 'Hassle-free maintenance and support.' },
+// Common key features that might appear across purifiers, simplified to match image style
+const commonFeaturesList: Feature[] = [
+  { id: 'multi-stage', name: 'Multistage Universal Water purifier', icon: Check },
+  { id: 'ro-purification', name: 'RO Purification', icon: Check },
+  { id: 'inline-uv', name: 'In-line UV purification', icon: Check },
 ];
 
-const roPlusPlans: Plan[] = [
-  { id: 'ro-basic', name: 'Basic', pricePerMonth: 399, limits: 'Upto 125L/month', features: ['RO Purification', 'UV Disinfection', 'TDS Control'], pillText: "STARTER" },
-  { id: 'ro-value', name: 'Value', pricePerMonth: 499, limits: 'Upto 200L/month', features: ['RO Purification', 'UV Disinfection', 'TDS Control', 'Pre-filter Change'], recommended: true, pillText: "POPULAR" },
-  { id: 'ro-commercial', name: 'Pro', pricePerMonth: 799, limits: 'Upto 500L/month', features: ['RO Purification', 'UV Disinfection', 'TDS Control', 'Pre-filter Change', 'Priority Support'] },
+const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness of copper', icon: Check };
+const alkalineSpecificFeature: Feature = { id: 'alkaline-ph', name: 'Alkaline pH Boost', icon: Check };
+
+
+// Plans now represent usage tiers like Solo, Couple, Family
+const soloPlanFeatures = ['Upto 130 ltrs/m usage', 'Free installation', 'Regular maintenance'];
+const couplePlanFeatures = ['Upto 200 ltrs/m usage', 'Free installation', 'Priority maintenance'];
+const familyPlanFeatures = ['Upto 500 ltrs/m usage', 'Free installation', 'Premium support'];
+const unlimitedPlanFeatures = ['Unlimited usage', 'Free installation', 'VIP support'];
+
+
+const basePlans: Omit<Plan, 'id' | 'pricePerMonth'>[] = [
+  { name: 'Solo', limits: '130 ltrs/m', features: soloPlanFeatures, pillText: 'SOLO' },
+  { name: 'Couple', limits: '200 ltrs/m', features: couplePlanFeatures, pillText: 'COUPLE', recommended: true},
+  { name: 'Family', limits: '500 ltrs/m', features: familyPlanFeatures, pillText: 'FAMILY' },
+  { name: 'Unlimited', limits: 'Unlimited ltrs/m', features: unlimitedPlanFeatures, pillText: 'UNLIMITED' },
 ];
 
-const copperRoPlusPlans: Plan[] = [
-  { id: 'cu-basic', name: 'Basic Copper', pricePerMonth: 449, limits: 'Upto 125L/month', features: ['Copper Charge Tech', 'RO Purification', 'UV Disinfection'] },
-  { id: 'cu-value', name: 'Value Copper', pricePerMonth: 549, limits: 'Upto 200L/month', features: ['Copper Charge Tech', 'RO Purification', 'UV Disinfection', 'Taste Enhancer'], recommended: true, pillText: "BESTSELLER" },
-  { id: 'cu-commercial', name: 'Pro Copper', pricePerMonth: 849, limits: 'Upto 500L/month', features: ['Copper Charge Tech', 'RO Purification', 'UV Disinfection', 'Taste Enhancer', 'Annual Filter Change'] },
-];
 
-const alkalineRoPlusPlans: Plan[] = [
-  { id: 'alk-basic', name: 'Basic Alkaline', pricePerMonth: 499, limits: 'Upto 125L/month', features: ['Alkaline Boost', 'RO Purification', 'pH Balance'] },
-  { id: 'alk-value', name: 'Value Alkaline', pricePerMonth: 599, limits: 'Upto 200L/month', features: ['Alkaline Boost', 'RO Purification', 'pH Balance', 'Mineral Cartridge'], recommended: true, pillText: "HEALTH CHOICE" },
-  { id: 'alk-commercial', name: 'Pro Alkaline', pricePerMonth: 899, limits: 'Upto 500L/month', features: ['Alkaline Boost', 'RO Purification', 'pH Balance', 'Mineral Cartridge', 'Extended Warranty'] },
-];
+// Function to generate plans for each purifier type with slight price variations
+const generatePurifierPlans = (purifierIdPrefix: string, basePrice: number): Plan[] => {
+  return basePlans.map((plan, index) => ({
+    ...plan,
+    id: `${purifierIdPrefix}-${plan.name.toLowerCase()}`,
+    pricePerMonth: basePrice + (index * 50), // Example price increment
+  }));
+};
+
 
 export const purifiers: Purifier[] = [
   {
-    id: 'ro-plus',
-    name: 'RO+',
-    plans: roPlusPlans,
-    image: 'https://placehold.co/300x300.png',
-    keyFeatures: [...commonKeyFeatures, { id: 'pure-water', name: 'Pure & Safe Water', icon: Droplet, description: 'Ensures 100% safe drinking water.' }],
-    accentColor: 'blue',
-    dataAiHint: 'water purifier',
-  },
-  {
-    id: 'copper-ro-plus',
-    name: 'Copper RO+',
-    plans: copperRoPlusPlans,
-    image: 'https://placehold.co/300x300.png',
-    keyFeatures: [
-      { id: 'copper-tech', name: 'Copper Infusion', icon: Atom, description: 'Adds goodness of copper to your water.' },
-      ...commonKeyFeatures
+    id: 'drinkprime-copper',
+    name: 'DrinkPrime Copper',
+    tagline: 'Bestseller',
+    taglineIcon: Sparkles,
+    plans: generatePurifierPlans('copper', 449), // Base price for Copper Solo
+    image: 'https://placehold.co/400x400.png',
+    thumbnailImages: [
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
     ],
+    storageCapacity: '8 Litre Storage',
+    keyFeatures: [ ...commonFeaturesList, copperSpecificFeature ],
     accentColor: 'copper',
-    dataAiHint: 'copper water filter',
+    dataAiHint: 'copper water purifier',
   },
   {
-    id: 'alkaline-ro-plus',
-    name: 'Alkaline RO+',
-    plans: alkalineRoPlusPlans,
-    image: 'https://placehold.co/300x300.png',
-    keyFeatures: [
-      { id: 'alkaline-tech', name: 'Alkaline Balance', icon: Filter, description: 'Maintains optimal pH for healthier water.' },
-      ...commonKeyFeatures
+    id: 'drinkprime-ro-plus',
+    name: 'DrinkPrime RO+',
+    plans: generatePurifierPlans('ro', 399), // Base price for RO+ Solo
+    image: 'https://placehold.co/400x400.png',
+     thumbnailImages: [
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
     ],
+    storageCapacity: '8 Litre Storage',
+    keyFeatures: commonFeaturesList,
+    accentColor: 'blue',
+    dataAiHint: 'ro water purifier',
+  },
+  {
+    id: 'drinkprime-alkaline',
+    name: 'DrinkPrime Alkaline',
+    tagline: 'Popular choice',
+    taglineIcon: Star,
+    plans: generatePurifierPlans('alkaline', 499), // Base price for Alkaline Solo
+    image: 'https://placehold.co/400x400.png',
+     thumbnailImages: [
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+    ],
+    storageCapacity: '8 Litre Storage',
+    keyFeatures: [ ...commonFeaturesList, alkalineSpecificFeature ],
     accentColor: 'teal',
-    dataAiHint: 'alkaline water system',
+    dataAiHint: 'alkaline water purifier',
   },
 ];
 
 export const defaultPurifierId = purifiers[0].id;
-export const defaultTenureId = tenureOptions[1].id; // Default to 12 months
+export const defaultTenureId = tenureOptions[1].id; // Default to 90 days
