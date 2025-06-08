@@ -1,41 +1,50 @@
 
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
-import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId } from '@/config/siteData';
-import type { Purifier as PurifierType } from '@/lib/types'; // Renamed to avoid conflict
+import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId, defaultPlanId as initialDefaultPlanId } from '@/config/siteData';
+import type { Purifier as PurifierType, Plan as PlanType, TenureOption as TenureType } from '@/lib/types';
 
 import PurifierSelector from '@/components/droppurity/PurifierSelector';
 import TenureSelector from '@/components/droppurity/TenureSelector';
 import PlanCard from '@/components/droppurity/PlanCard';
-import KeyFeaturesDisplay from '@/components/droppurity/KeyFeaturesDisplay';
+import PlanTypeSelector from '@/components/droppurity/PlanTypeSelector'; // New component
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Droplet, HelpCircle, Lock, LayoutGrid, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Placeholder for a more sophisticated image gallery
+// Enhanced PurifierImageDisplay with Carousel functionality
 function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
+  const allImages = useMemo(() => (purifier.thumbnailImages && purifier.thumbnailImages.length > 0
+    ? [purifier.image, ...purifier.thumbnailImages]
+    : [purifier.image]), [purifier]);
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = purifier.thumbnailImages && purifier.thumbnailImages.length > 0 
-                  ? [purifier.image, ...purifier.thumbnailImages] 
-                  : [purifier.image];
-  
-  const mainDisplayImage = images[currentImageIndex] || purifier.image;
+
+  useEffect(() => {
+    setCurrentImageIndex(0); // Reset to first image when purifier changes
+  }, [purifier]);
 
   const handleThumbnailClick = (index: number) => {
     setCurrentImageIndex(index);
   };
 
-  const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+  };
 
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
+  
+  const mainDisplayImage = allImages[currentImageIndex] || purifier.image;
 
   return (
     <Card className="shadow-xl overflow-hidden">
       <CardContent className="p-4 sm:p-6">
-        <div className="relative aspect-square mb-4">
+        <div className="relative aspect-[4/3] mb-4"> {/* Adjusted aspect ratio */}
           <Image
             src={mainDisplayImage}
             alt={purifier.name}
@@ -49,15 +58,25 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
               {purifier.storageCapacity}
             </div>
           )}
+          {allImages.length > 1 && (
+            <>
+              <Button variant="ghost" size="icon" onClick={prevImage} className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80">
+                <ChevronLeft className="w-6 h-6" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={nextImage} className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80">
+                <ChevronRight className="w-6 h-6" />
+              </Button>
+            </>
+          )}
         </div>
-        {images.length > 1 && (
+        {allImages.length > 1 && (
            <div className="relative">
-            <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2">
-              {images.map((img, index) => (
+            <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2 no-scrollbar"> {/* Added no-scrollbar */}
+              {allImages.map((img, index) => (
                 <button
                   key={index}
                   onClick={() => handleThumbnailClick(index)}
-                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden border-2 transition-all
+                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden border-2 transition-all shrink-0
                     ${index === currentImageIndex ? 'border-dynamic-accent ring-2 ring-dynamic-accent' : 'border-border hover:border-muted-foreground'}`}
                 >
                   <Image src={img} alt={`${purifier.name} thumbnail ${index + 1}`} width={80} height={80} className="object-contain w-full h-full" />
@@ -75,10 +94,33 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
 export default function DroppurityPlansPage() {
   const [selectedPurifierId, setSelectedPurifierId] = useState<string>(defaultPurifierId);
   const [selectedTenureId, setSelectedTenureId] = useState<string>(defaultTenureId);
-
+  
   const selectedPurifier = useMemo(
     () => purifiers.find(p => p.id === selectedPurifierId) || purifiers[0],
     [selectedPurifierId]
+  );
+
+  // Initialize selectedPlanId, ensuring it's valid for the selectedPurifier
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(() => {
+    const initialPurifier = purifiers.find(p => p.id === defaultPurifierId) || purifiers[0];
+    const recommendedPlan = initialPurifier.plans.find(p => p.recommended);
+    return recommendedPlan?.id || initialPurifier.plans[0]?.id || '';
+  });
+
+  useEffect(() => {
+    // When purifier changes, update selectedPlanId to a valid plan for the new purifier
+    // (e.g., the recommended one or the first one)
+    const currentPurifierRecommendedPlan = selectedPurifier.plans.find(p => p.recommended);
+    const defaultPlanForCurrentPurifier = currentPurifierRecommendedPlan?.id || selectedPurifier.plans[0]?.id;
+    if (defaultPlanForCurrentPurifier) {
+      setSelectedPlanId(defaultPlanForCurrentPurifier);
+    }
+  }, [selectedPurifierId, selectedPurifier.plans]);
+
+
+  const selectedPlan = useMemo(
+    () => selectedPurifier.plans.find(p => p.id === selectedPlanId),
+    [selectedPurifier, selectedPlanId]
   );
 
   const selectedTenure = useMemo(
@@ -92,8 +134,6 @@ export default function DroppurityPlansPage() {
     return ''; 
   }, [selectedPurifier.accentColor]);
 
-  const plansToShow = selectedPurifier.plans;
-
   return (
     <div className={`min-h-screen ${themeAccentClass} py-6 sm:py-10 bg-background`}>
       <div className="container mx-auto px-4">
@@ -103,47 +143,50 @@ export default function DroppurityPlansPage() {
               Choose Your Droppurity Plan
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground mt-2">
-              Select the right purifier and plan for your needs.
+              Select the right purifier, plan, and tenure for your needs.
             </p>
         </header>
 
+        <div className="mb-8 sm:mb-12">
+          <PurifierSelector
+            purifiers={purifiers}
+            selectedPurifierId={selectedPurifierId}
+            onSelectPurifier={setSelectedPurifierId}
+          />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
-          {/* Left Column: Purifier Image */}
           <div className="lg:col-span-2">
             <PurifierImageDisplay purifier={selectedPurifier} />
           </div>
 
-          {/* Right Column: Plan Selection */}
           <div className="lg:col-span-3">
             <Card className="shadow-xl sticky top-20">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl text-foreground">Flexible Rental Plans</CardTitle>
+                <p className="text-sm text-muted-foreground">Security deposit of ₹1,500 will be 100% refundable.</p>
+              </CardHeader>
               <CardContent className="p-4 sm:p-6 space-y-6">
-                <div>
-                  <h2 className="text-lg font-semibold text-foreground mb-1">Flexible Rental Plans</h2>
-                  <p className="text-xs text-muted-foreground">Security deposit of ₹1,500 will be 100% refundable.</p>
-                </div>
-                
                 <Separator />
-
                 <div>
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Select Your Purifier</h3>
-                  </div>
-                  <PurifierSelector
-                    purifiers={purifiers}
-                    selectedPurifierId={selectedPurifierId}
-                    onSelectPurifier={setSelectedPurifierId}
-                  />
-                  <KeyFeaturesDisplay purifier={selectedPurifier} />
-                </div>
-                
-                <Separator />
-
-                <div>
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Choose Your Tenure</h3>
-                    {/* <Button variant="ghost" size="sm" className="text-xs text-primary hover:text-primary/80">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Step 1: Choose Your Plan</h3>
+                    <Button variant="outline" size="sm" className="text-xs text-dynamic-accent border-dynamic-accent hover:bg-dynamic-accent/10">
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
-                    </Button> */}
+                    </Button>
+                  </div>
+                  <PlanTypeSelector
+                    plans={selectedPurifier.plans}
+                    selectedPlanId={selectedPlanId}
+                    onSelectPlan={setSelectedPlanId}
+                  />
+                </div>
+                
+                <Separator />
+
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground">Step 2: Choose Your Tenure</h3>
                   </div>
                   <TenureSelector
                     tenureOptions={tenureOptions}
@@ -151,37 +194,35 @@ export default function DroppurityPlansPage() {
                     onSelectTenure={setSelectedTenureId}
                   />
                 </div>
+                <Separator />
+                
+                {selectedPlan && selectedTenure ? (
+                  <PlanCard
+                    plan={selectedPlan}
+                    tenure={selectedTenure}
+                    displayPurifierName={`${selectedPurifier.name} - ${selectedPlan.name}`}
+                  />
+                ) : (
+                  <div className="text-center text-muted-foreground py-8">
+                    Please make your selections to see plan details.
+                  </div>
+                )}
                 
               </CardContent>
             </Card>
           </div>
         </div>
-
-        {/* Plan Cards Section - Full Width Below or as part of right col */}
-        <section className="mt-8 sm:mt-12">
-          <div className="flex justify-between items-center mb-4 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl font-semibold font-headline text-center sm:text-left text-foreground">
-              2. Pick Your Plan ({selectedPurifier.name} - {selectedTenure.displayName})
-            </h2>
-            <Button variant="outline" size="sm" className="hidden sm:inline-flex text-dynamic-accent border-dynamic-accent hover:bg-dynamic-accent/10">
-              <LayoutGrid className="w-4 h-4 mr-2" /> Help me choose
-            </Button>
-          </div>
-          {plansToShow.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {plansToShow.map(plan => (
-                <PlanCard
-                  key={plan.id}
-                  plan={plan}
-                  tenure={selectedTenure}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-muted-foreground py-8">No plans available for this selection.</p>
-          )}
-        </section>
       </div>
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none; 
+          scrollbar-width: none; 
+        }
+      `}</style>
     </div>
   );
 }
+

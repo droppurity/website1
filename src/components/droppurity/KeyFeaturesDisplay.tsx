@@ -10,11 +10,11 @@ import { Check } from 'lucide-react';
 
 interface KeyFeaturesDisplayProps {
   purifier?: Purifier;
+  className?: string; // Allow passing additional classes
 }
 
 function FeaturePill({ feature, accentIsPrimary }: { feature: Feature, accentIsPrimary: boolean }) {
-  const IconComponent = feature.icon || Check; // Default to Check icon
-  // For key features, they are usually positive, so a green check is standard
+  const IconComponent = feature.icon || Check;
   const iconColorClass = 'text-green-500'; 
   const pillBgClass = 'bg-green-50';
   const pillTextColorClass = 'text-green-700';
@@ -28,11 +28,12 @@ function FeaturePill({ feature, accentIsPrimary }: { feature: Feature, accentIsP
 }
 
 
-export default function KeyFeaturesDisplay({ purifier }: KeyFeaturesDisplayProps) {
+export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesDisplayProps) {
   const isMobile = useIsMobile();
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
-  const features = purifier?.keyFeatures || [];
+  // Use technical key features from purifier.keyFeatures
+  const features = purifier?.keyFeatures || []; 
   const accentIsPrimary = !purifier || purifier.accentColor === 'blue';
 
 
@@ -47,7 +48,7 @@ export default function KeyFeaturesDisplay({ purifier }: KeyFeaturesDisplayProps
 
   if (!purifier || features.length === 0) {
     return (
-      <div className="w-full mx-auto my-4 p-2 text-center text-sm text-muted-foreground">
+      <div className={`w-full mx-auto my-4 p-2 text-center text-sm text-muted-foreground ${className}`}>
         {purifier ? 'No specific key features listed for this purifier.' : 'Select a purifier to see its features.'}
       </div>
     );
@@ -55,7 +56,7 @@ export default function KeyFeaturesDisplay({ purifier }: KeyFeaturesDisplayProps
 
 
   return (
-    <div className="w-full mx-auto my-4 md:my-6">
+    <div className={`w-full mx-auto my-4 md:my-6 ${className}`}>
       {isMobile && features.length > 0 ? (
         <div className="h-[50px] flex items-center justify-center overflow-hidden px-2">
              <AnimatedFeature

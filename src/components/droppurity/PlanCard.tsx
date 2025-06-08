@@ -11,19 +11,21 @@ import { useToast } from "@/hooks/use-toast";
 interface PlanCardProps {
   plan: Plan;
   tenure: TenureOption;
+  displayPurifierName?: string; // Optional: To display combined name like "Droppurity Copper - Value Plan"
 }
 
-export default function PlanCard({ plan, tenure }: PlanCardProps) {
+export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCardProps) {
   const { toast } = useToast();
 
   const priceDetail: PlanPriceDetail | undefined = plan.tenurePricing[tenure.id];
 
   if (!priceDetail) {
-    // Fallback or error display if pricing for the selected tenure isn't defined
     return (
       <Card className="flex flex-col shadow-lg rounded-xl overflow-hidden border border-destructive">
         <CardHeader className="p-4 sm:p-6 bg-card">
-          <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-destructive-foreground">{plan.name}</CardTitle>
+          <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-destructive-foreground">
+            {displayPurifierName || plan.name}
+          </CardTitle>
         </CardHeader>
         <CardContent className="p-4 sm:p-6 flex-grow">
           <p className="text-center text-destructive">Pricing not available for {tenure.displayName}.</p>
@@ -38,7 +40,6 @@ export default function PlanCard({ plan, tenure }: PlanCardProps) {
 
   const featuresToShow = [...plan.baseFeatures, ...(priceDetail.additionalFeatures || [])];
 
-  // Calculate savings against the 28-day price of the *same* plan
   let savingsAmount = 0;
   const basePriceDetailForSavingsCalc = plan.tenurePricing['28d'];
   if (basePriceDetailForSavingsCalc && tenure.id !== '28d') {
@@ -49,27 +50,31 @@ export default function PlanCard({ plan, tenure }: PlanCardProps) {
   const handleSubscribe = () => {
     toast({
       title: "Subscribed!",
-      description: `You've chosen the ${plan.name} plan for ${tenure.displayName}.`,
+      description: `You've chosen the ${displayPurifierName || plan.name} for ${tenure.displayName}.`,
     });
   };
 
   const handleKnowMore = () => {
      toast({
       title: "More Information",
-      description: `Details for ${plan.name} plan. This could navigate to a detailed page or open a modal.`,
+      description: `Details for ${displayPurifierName || plan.name}. This could navigate to a detailed page or open a modal.`,
       action: <Button variant="outline" size="sm">Learn Even More</Button>,
     });
   }
 
   return (
-    <Card className={`flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden border ${plan.recommended ? 'border-dynamic-accent border-2 relative' : 'border-border'}`}>
-      {plan.recommended && plan.pillText && (
+    // Removed outer border classes, assuming it will be placed inside another card or section.
+    // Added relative positioning for the badge if needed.
+    <div className={`flex flex-col rounded-xl overflow-hidden ${plan.recommended && !displayPurifierName ? 'border-dynamic-accent border-2 relative' : ''}`}>
+      {plan.recommended && plan.pillText && !displayPurifierName && ( // only show pill if not part of composite display
         <Badge variant="default" className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dynamic-accent text-dynamic-accent-foreground px-3 py-1 text-xs z-10">
           {plan.pillText}
         </Badge>
       )}
       <CardHeader className="p-4 sm:p-6 bg-card">
-        <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-foreground">{plan.name}</CardTitle>
+        <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-foreground">
+          {displayPurifierName || plan.name}
+        </CardTitle>
         <p className="text-xs text-muted-foreground text-center">{plan.limits}</p>
         <div className="text-center mt-2">
           <span className="text-3xl sm:text-4xl font-bold font-headline text-dynamic-accent">
@@ -106,6 +111,6 @@ export default function PlanCard({ plan, tenure }: PlanCardProps) {
            Subscribe Now
         </Button>
       </CardFooter>
-    </Card>
+    </div>
   );
 }

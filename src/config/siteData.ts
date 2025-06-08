@@ -19,7 +19,7 @@ const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness 
 const alkalineSpecificFeature: Feature = { id: 'alkaline-ph', name: 'Alkaline pH Boost', icon: Check };
 
 // Base Plan Structures (features, limits) - Pricing will be per purifier
-const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText'>[] = [
+const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText' | 'recommended'> & { name: 'Basic' | 'Value' | 'Commercial', recommended?: boolean }[] = [
   {
     name: 'Basic',
     limits: 'Upto 150 ltrs/m',
@@ -39,18 +39,18 @@ const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText'>[] = [
 ];
 
 // Pricing for Droppurity RO+ (Base Prices)
-const roPlusPricing: { [planName: string]: { [tenureId: string]: PlanPriceDetail } } = {
+const roPlusPricing: { [planName in 'Basic' | 'Value' | 'Commercial']: { [tenureId: string]: PlanPriceDetail } } = {
   Basic: {
     '28d': { pricePerMonth: 449 },
     '7m': { pricePerMonth: 299 },
     '12m': { pricePerMonth: 299, payingMonths: 11, additionalFeatures: ["+1 month free"] },
   },
-  Value: { // Placeholder pricing for Value
+  Value: { 
     '28d': { pricePerMonth: 549 },
     '7m': { pricePerMonth: 399 },
     '12m': { pricePerMonth: 399, payingMonths: 11, additionalFeatures: ["+1 month free"] },
   },
-  Commercial: { // Placeholder pricing for Commercial
+  Commercial: { 
     '28d': { pricePerMonth: 749 },
     '7m': { pricePerMonth: 599 },
     '12m': { pricePerMonth: 549, payingMonths: 10, additionalFeatures: ["+2 months free"] },
@@ -77,8 +77,9 @@ const generatePlansForPurifier = (
     return {
       ...basePlanDef,
       id: `${purifierIdPrefix}-${basePlanDef.name.toLowerCase()}`,
-      pillText: basePlanDef.name.toUpperCase(),
+      pillText: basePlanDef.name.toUpperCase(), // Used by PlanTypeSelector
       tenurePricing: planPricing,
+      recommended: basePlanDef.recommended || false,
     };
   });
 };
@@ -87,15 +88,15 @@ export const purifiers: Purifier[] = [
   {
     id: 'droppurity-ro-plus',
     name: 'Droppurity RO+',
-    plans: generatePlansForPurifier('ro-plus', 0), // No increment for base RO+
-    image: 'https://placehold.co/400x400.png',
+    plans: generatePlansForPurifier('ro-plus', 0), 
+    image: 'https://placehold.co/600x400.png',
     thumbnailImages: [
         'https://placehold.co/100x100.png',
         'https://placehold.co/100x100.png',
         'https://placehold.co/100x100.png',
     ],
     storageCapacity: '8 Litre Storage',
-    keyFeatures: commonFeaturesList,
+    keyFeatures: commonFeaturesList, // These are technical features, not plan benefits
     accentColor: 'blue',
     dataAiHint: 'ro water purifier',
   },
@@ -104,8 +105,8 @@ export const purifiers: Purifier[] = [
     name: 'Droppurity Copper',
     tagline: 'Bestseller',
     taglineIcon: Sparkles,
-    plans: generatePlansForPurifier('copper', 85), // +85 for Copper
-    image: 'https://placehold.co/400x400.png',
+    plans: generatePlansForPurifier('copper', 85), 
+    image: 'https://placehold.co/600x400.png',
     thumbnailImages: [
         'https://placehold.co/100x100.png',
         'https://placehold.co/100x100.png',
@@ -121,8 +122,8 @@ export const purifiers: Purifier[] = [
     name: 'Droppurity Alkaline',
     tagline: 'Popular choice',
     taglineIcon: Star,
-    plans: generatePlansForPurifier('alkaline', 75), // +75 for Alkaline
-    image: 'https://placehold.co/400x400.png',
+    plans: generatePlansForPurifier('alkaline', 75), 
+    image: 'https://placehold.co/600x400.png',
      thumbnailImages: [
         'https://placehold.co/100x100.png',
         'https://placehold.co/100x100.png',
@@ -135,5 +136,14 @@ export const purifiers: Purifier[] = [
   },
 ];
 
-export const defaultPurifierId = purifiers[0].id; // Default to Droppurity RO+
-export const defaultTenureId = tenureOptions[1].id; // Default to 7 Months
+export const defaultPurifierId = purifiers[0].id; 
+export const defaultTenureId = tenureOptions[1].id; // Default to 7 Months (index 1)
+
+// Find the default plan (e.g., the "Value" plan or the first one if Value isn't found) for the default purifier
+const getDefaultPlanForDefaultPurifier = () => {
+    const defaultPurifier = purifiers.find(p => p.id === defaultPurifierId) || purifiers[0];
+    const recommendedPlan = defaultPurifier.plans.find(plan => plan.recommended);
+    return recommendedPlan ? recommendedPlan.id : defaultPurifier.plans[0]?.id;
+};
+
+export const defaultPlanId = getDefaultPlanForDefaultPurifier();
