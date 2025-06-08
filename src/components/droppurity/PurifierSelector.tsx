@@ -34,10 +34,10 @@ export default function PurifierSelector({
             <Button
               variant={isSelected ? "default" : "outline"}
               onClick={() => onSelectPurifier(purifier.id)}
-              className={`h-auto px-3 py-2 md:px-4 md:py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2
+              className={`h-auto px-3 py-2 md:px-4 md:py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 mt-3 md:mt-0
                 ${isSelected 
-                  ? 'bg-dynamic-accent text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent mt-3 md:mt-0' 
-                  : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground mt-3 md:mt-0'
+                  ? 'bg-gradient-to-br from-gradient-start to-gradient-end text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent' 
+                  : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground'
                 }
               `}
             >

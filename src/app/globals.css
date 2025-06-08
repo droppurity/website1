@@ -42,12 +42,17 @@
     --radius: 0.75rem; /* More rounded corners */
 
     /* Dynamic accent colors */
-    /* Ensure these are HSL values without the 'hsl()' wrapper */
     --dynamic-accent-hsl-values: 210 90% 55%; /* Default to primary blue HSL values */
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
 
+    /* Gradient variables for dynamic accent */
+    --gradient-start-hsl-values: var(--dynamic-accent-hsl-values); /* Default to current dynamic accent */
+    --gradient-end-hsl-values: 210 90% 45%; /* Darker shade of default blue */
+
     --dynamic-accent: hsl(var(--dynamic-accent-hsl-values));
     --dynamic-accent-foreground: hsl(var(--dynamic-accent-foreground-hsl-values));
+    --gradient-start: hsl(var(--gradient-start-hsl-values));
+    --gradient-end: hsl(var(--gradient-end-hsl-values));
   }
 
   .dark {
@@ -81,16 +86,24 @@
 
     --dynamic-accent-hsl-values: 210 90% 60%;
     --dynamic-accent-foreground-hsl-values: 220 30% 5%;
+
+    /* Gradient variables for dynamic accent in dark mode */
+    --gradient-start-hsl-values: var(--dynamic-accent-hsl-values); /* Default to current dynamic accent in dark mode */
+    --gradient-end-hsl-values: 210 90% 50%; /* Darker shade of default blue in dark mode */
   }
 
   .theme-teal {
     --dynamic-accent-hsl-values: 170 60% 45%;
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
+    --gradient-start-hsl-values: 170 60% 45%; /* Teal */
+    --gradient-end-hsl-values: 170 60% 35%; /* Darker Teal */
   }
 
   .theme-copper {
-    --dynamic-accent-hsl-values: 30 70% 50%; /* Example: A nice copper/orange */
+    --dynamic-accent-hsl-values: 30 70% 50%; 
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
+    --gradient-start-hsl-values: 30 70% 50%; /* Copper */
+    --gradient-end-hsl-values: 30 70% 40%; /* Darker Copper */
   }
 }
 

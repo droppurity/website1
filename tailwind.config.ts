@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -65,8 +66,10 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
-        'dynamic-accent': 'hsl(var(--dynamic-accent-hsl))',
-        'dynamic-accent-foreground': 'hsl(var(--dynamic-accent-foreground-hsl))',
+        'dynamic-accent': 'hsl(var(--dynamic-accent-hsl-values))',
+        'dynamic-accent-foreground': 'hsl(var(--dynamic-accent-foreground-hsl-values))',
+        'gradient-start': 'hsl(var(--gradient-start-hsl-values))',
+        'gradient-end': 'hsl(var(--gradient-end-hsl-values))',
       },
       borderRadius: {
         lg: 'var(--radius)',
