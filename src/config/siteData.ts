@@ -22,18 +22,18 @@ const alkalineSpecificFeature: Feature = { id: 'alkaline-ph', name: 'Alkaline pH
 const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText' | 'recommended'> & { name: 'Basic' | 'Value' | 'Commercial', recommended?: boolean }[] = [
   {
     name: 'Basic',
-    limits: 'Upto 150 ltrs/m',
+    limits: 'Upto 25 L/day',
     baseFeatures: ['Free installation', 'Regular maintenance', 'Free relocation'],
   },
   {
     name: 'Value',
-    limits: 'Upto 250 ltrs/m',
+    limits: 'Upto 50 L/day',
     baseFeatures: ['Free installation', 'Priority maintenance', 'Biannual filter change', 'Free relocation'],
     recommended: true,
   },
   {
     name: 'Commercial',
-    limits: 'Upto 500 ltrs/m',
+    limits: 'Upto 100 L/day',
     baseFeatures: ['Free installation', 'Express maintenance', 'Quarterly filter change', 'Dedicated support line', 'Free relocation'],
   },
 ];
