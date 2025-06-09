@@ -48,7 +48,7 @@
 
 
     /* Gradient variables for dynamic accent */
-    --gradient-start-hsl-values: var(--dynamic-accent-hsl-values); /* Default to current dynamic accent */
+    --gradient-start-hsl-values: 210 90% 55%; /* Default to current dynamic accent */
     --gradient-end-hsl-values: 210 90% 45%; /* Darker shade of default blue */
 
     --dynamic-accent: hsl(var(--dynamic-accent-hsl-values));
@@ -93,8 +93,24 @@
 
 
     /* Gradient variables for dynamic accent in dark mode */
-    --gradient-start-hsl-values: var(--dynamic-accent-hsl-values); /* Default to current dynamic accent in dark mode */
+    --gradient-start-hsl-values: 210 90% 60%; /* Default to current dynamic accent in dark mode */
     --gradient-end-hsl-values: 210 90% 50%; /* Darker shade of default blue in dark mode */
+  }
+
+  .theme-blue { /* Explicitly define blue theme variables */
+    --dynamic-accent-hsl-values: 210 90% 55%;
+    --dynamic-accent-foreground-hsl-values: 0 0% 100%;
+    --light-dynamic-accent-bg-hsl-values: 210 90% 88%;
+    --gradient-start-hsl-values: 210 90% 55%;
+    --gradient-end-hsl-values: 210 90% 45%;
+  }
+
+  .dark .theme-blue { /* Dark mode for explicit blue theme */
+    --dynamic-accent-hsl-values: 210 90% 60%;
+    --dynamic-accent-foreground-hsl-values: 220 30% 5%;
+    --light-dynamic-accent-bg-hsl-values: 210 80% 22%;
+    --gradient-start-hsl-values: 210 90% 60%;
+    --gradient-end-hsl-values: 210 90% 50%;
   }
 
   .theme-teal {

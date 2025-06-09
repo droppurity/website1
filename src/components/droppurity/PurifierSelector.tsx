@@ -27,10 +27,10 @@ export default function PurifierSelector({
 
         const buttonThemeClass = purifier.accentColor === 'copper' ? 'theme-copper'
                                : purifier.accentColor === 'teal' ? 'theme-teal'
-                               : ''; // Default (blue) uses base CSS vars without a theme class
+                               : 'theme-blue'; // Explicitly use theme-blue for default
 
         return (
-          <div key={purifier.id} className={`relative flex-shrink-0 text-center pb-2 ${buttonThemeClass}`}> {/* Added pb-2 for arrow space */}
+          <div key={purifier.id} className={`relative flex-shrink-0 text-center pb-2 ${buttonThemeClass}`}>
             {isSelected && purifier.tagline && (
               <div className="absolute -top-0 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap" style={{minWidth: 'max-content'}}>
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-tight font-semibold bg-primary text-primary-foreground shadow-md">
