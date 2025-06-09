@@ -2,7 +2,6 @@
 "use client";
 
 import type { Feature, Purifier } from '@/lib/types';
-// Removed useIsMobile import as it's no longer needed here
 import { useEffect, useState } from 'react';
 import AnimatedFeature from './AnimatedFeature';
 import { Check } from 'lucide-react';
@@ -46,14 +45,14 @@ export default function KeyFeaturesDisplay({ purifier, className, displayMode }:
     <div className={`w-full mx-auto ${className}`}>
       {displayMode === 'animate' ? (
         featureForAnimation ? (
-          <div className="h-[40px] flex items-center justify-center overflow-hidden px-2">
+          <div className="h-[28px] flex items-center justify-center overflow-hidden px-2">
             <AnimatedFeature
               key={featureForAnimation.id}
               feature={featureForAnimation}
             />
           </div>
         ) : (
-          <div className="h-[40px]" /> // Fallback empty space for animate mode if no feature
+          <div className="h-[28px]" /> // Fallback empty space for animate mode if no feature
         )
       ) : ( // displayMode === 'list'
         <div className="px-2">

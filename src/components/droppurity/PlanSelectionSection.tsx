@@ -226,7 +226,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 
         <div className={cn(
-            "sticky bg-background py-1 shadow-lg mb-6 sm:mb-10 z-40",
+            "sticky bg-background py-0.5 shadow-lg mb-6 sm:mb-10 z-40",
             isHeaderDominant && "z-[51]"
           )}
           style={{ top: '0' }}>
@@ -236,7 +236,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
             onSelectPurifier={setSelectedPurifierId}
           />
            <div className="lg:hidden"> {/* Only show animated features in header on mobile/tablet */}
-            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-1" displayMode="animate" />
+            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-0.5" displayMode="animate" />
           </div>
         </div>
 

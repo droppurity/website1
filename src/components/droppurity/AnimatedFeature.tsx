@@ -23,12 +23,12 @@ export default function AnimatedFeature({ feature, className }: AnimatedFeatureP
 
   return (
     <div
-      className={`transition-all duration-150 ease-in-out transform ${ // Duration changed from 300ms to 150ms
+      className={`transition-all duration-150 ease-in-out transform ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       } ${className}`}
     >
-      <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-light-dynamic-accent text-dynamic-accent shadow-sm`}> {/* Changed py-1.5 to py-1, dynamic colors */}
-        {IconComponent && <IconComponent className={`w-3 h-3 text-dynamic-accent`} />} {/* Changed icon size, dynamic color */}
+      <div className={`flex items-center gap-2 px-2 py-0.5 rounded-full text-xs font-medium bg-light-dynamic-accent text-dynamic-accent shadow-sm`}>
+        {IconComponent && <IconComponent className={`w-3 h-3 text-dynamic-accent`} />}
         <span className="text-center">{feature.name}</span>
       </div>
     </div>
