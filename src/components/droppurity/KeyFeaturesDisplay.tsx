@@ -15,7 +15,7 @@ interface KeyFeaturesDisplayProps {
 
 function FeaturePill({ feature, accentIsPrimary }: { feature: Feature, accentIsPrimary: boolean }) {
   const IconComponent = feature.icon || Check;
-  const iconColorClass = 'text-green-500'; 
+  const iconColorClass = 'text-green-500';
   const pillBgClass = 'bg-green-50';
   const pillTextColorClass = 'text-green-700';
 
@@ -32,18 +32,24 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
   const isMobile = useIsMobile();
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
-  const features = purifier?.keyFeatures || []; 
-  const accentIsPrimary = !purifier || purifier.accentColor === 'blue';
+  const features = purifier?.keyFeatures || [];
+  const accentIsPrimary = !purifier || purifier.accentColor === 'blue'; // Corrected this line
 
+  // Reset currentFeatureIndex to 0 when the features array changes
+  useEffect(() => {
+    setCurrentFeatureIndex(0);
+  }, [features]);
 
   useEffect(() => {
     if (isMobile && features.length > 0) {
       const timer = setInterval(() => {
+        // The modulo operator will ensure the index wraps around correctly
+        // and stays within bounds for the current features.length.
         setCurrentFeatureIndex(prevIndex => (prevIndex + 1) % features.length);
-      }, 3000); 
+      }, 3000);
       return () => clearInterval(timer);
     }
-  }, [isMobile, features.length]);
+  }, [isMobile, features.length]); // Rely on features.length for this effect
 
   if (!purifier || features.length === 0) {
     return (
@@ -53,17 +59,22 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
     );
   }
 
+  // At this point, features.length > 0 is guaranteed.
+  // And currentFeatureIndex should be 0 if features just changed, or a valid cycling index.
+  const featureForAnimation = features[currentFeatureIndex];
 
   return (
     <div className={`w-full mx-auto mt-2 ${className}`}>
-      {isMobile && features.length > 0 ? (
-        <div className="h-[40px] flex items-center justify-center overflow-hidden px-2"> 
+      {isMobile && featureForAnimation ? ( // Check featureForAnimation to ensure it's defined
+        <div className="h-[40px] flex items-center justify-center overflow-hidden px-2">
              <AnimatedFeature
-                key={features[currentFeatureIndex].id}
-                feature={features[currentFeatureIndex]}
+                key={featureForAnimation.id} // Accessing .id is now safer
+                feature={featureForAnimation}
                 accentIsPrimary={accentIsPrimary}
               />
         </div>
+      ) : isMobile ? ( // Handle case where featureForAnimation might be undefined (should be rare with reset)
+        <div className="h-[40px]" /> // Empty div to maintain layout space
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-2">
           {features.map(feature => (
