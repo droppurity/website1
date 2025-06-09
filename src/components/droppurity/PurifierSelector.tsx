@@ -16,7 +16,7 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <div className="w-full flex items-start justify-center gap-3 sm:gap-4 overflow-x-auto md:flex-wrap no-scrollbar py-3">
+    <div className="w-full flex items-start gap-3 sm:gap-4 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar py-3">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
@@ -30,7 +30,7 @@ export default function PurifierSelector({
                                : 'theme-blue'; // Explicitly use theme-blue for default
 
         return (
-          <div key={purifier.id} className={`relative flex-shrink-0 text-center pb-2 ${buttonThemeClass}`}>
+          <div key={purifier.id} className={`relative flex-1 sm:flex-shrink-0 text-center pb-2 ${buttonThemeClass}`}>
             {isSelected && purifier.tagline && (
               <div className="absolute -top-0 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap" style={{minWidth: 'max-content'}}>
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] leading-tight font-semibold bg-primary text-primary-foreground shadow-md">
@@ -42,7 +42,7 @@ export default function PurifierSelector({
             <Button
               variant={"outline"}
               onClick={() => onSelectPurifier(purifier.id)}
-              className={`h-auto px-2 py-1.5 md:px-3.5 md:py-2.5 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 mt-4
+              className={`h-auto px-2 py-1.5 md:px-3.5 md:py-2.5 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 mt-4 w-full sm:w-auto
                 ${isSelected 
                   ? 'bg-gradient-to-br from-gradient-start to-gradient-end text-dynamic-accent-foreground border-dynamic-accent ring-2 ring-dynamic-accent' 
                   : 'bg-light-dynamic-accent text-dynamic-accent border-dynamic-accent/40 hover:bg-dynamic-accent/20 hover:text-dynamic-accent hover:border-dynamic-accent/60'
