@@ -20,7 +20,7 @@ const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness 
 const alkalineSpecificFeature: Feature = { id: 'alkaline-ph', name: 'Alkaline pH Boost', icon: Check };
 
 // Base Plan Structures (features, limits) - Pricing will be per purifier
-const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText' | 'recommended'> & { name: 'Basic' | 'Value' | 'Commercial', recommended?: boolean }[] = [
+export const basePlanDefinitions: Omit<Plan, 'id' | 'tenurePricing' | 'pillText' | 'recommended'> & { name: 'Basic' | 'Value' | 'Commercial', recommended?: boolean }[] = [
   {
     name: 'Basic',
     limits: 'Upto 25 L/day',

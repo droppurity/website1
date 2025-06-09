@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import { Droplet, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import HelpMeChooseDialog from "./HelpMeChooseDialog";
 
 
 interface PlanSelectionSectionProps {
@@ -42,20 +44,20 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
     if (allImages.length > 1) {
       autoScrollTimerRef.current = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
-      }, 4000); // Auto-scroll every 4 seconds
+      }, 4000); 
     }
   };
 
   useEffect(() => {
-    setCurrentImageIndex(0); // Reset index when purifier changes
-    startAutoScrollTimer(); // Start/Restart timer for new purifier
-    return () => clearAutoScrollTimer(); // Cleanup on component unmount
-  }, [purifier, allImages.length]); // Rerun when purifier or allImages.length changes
+    setCurrentImageIndex(0); 
+    startAutoScrollTimer(); 
+    return () => clearAutoScrollTimer(); 
+  }, [purifier, allImages.length]); 
 
 
   const handleThumbnailClick = (index: number) => {
     setCurrentImageIndex(index);
-    startAutoScrollTimer(); // Restart timer on manual interaction
+    startAutoScrollTimer(); 
   };
 
   const nextImage = () => {
@@ -84,7 +86,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
             layout="fill"
             objectFit="contain"
             className="rounded-lg"
-            priority // Consider adding priority if this is LCP for the view
+            priority 
             data-ai-hint={purifier.dataAiHint || "water purifier"}
           />
           {purifier.storageCapacity && (
@@ -168,8 +170,6 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   });
 
   useEffect(() => {
-    // This effect should ONLY run when the selectedPurifier changes,
-    // to set a default plan for the newly selected purifier.
     const currentPurifierPlans = selectedPurifier.plans;
     if (!currentPurifierPlans || currentPurifierPlans.length === 0) {
       setSelectedPlanId('');
@@ -189,7 +189,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
       }
     }
     setSelectedPlanId(newSelectedPlanId);
-  }, [selectedPurifier]); // Only depends on selectedPurifier
+  }, [selectedPurifier]); 
 
 
   const selectedPlan = useMemo(
@@ -235,7 +235,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
-           <div className="lg:hidden"> {/* Only show animated features in header on mobile/tablet */}
+           <div className="lg:hidden"> 
             <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-0.5" displayMode="animate" />
           </div>
         </div>
@@ -243,7 +243,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
             <PurifierImageDisplay purifier={selectedPurifier} />
-            <div className="hidden lg:block"> {/* Only show list features below image on desktop */}
+            <div className="hidden lg:block"> 
                  <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-4 lg:mt-6" displayMode="list" />
             </div>
           </div>
@@ -260,18 +260,23 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground">Step 1: Choose Your Plan</h3>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                       className={cn(
-                        "text-xs border-dynamic-accent",
-                        "text-dynamic-accent bg-transparent",
-                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent",
-                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent"
-                      )}
-                    >
-                      <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={cn(
+                            "text-xs border-dynamic-accent",
+                            "text-dynamic-accent bg-transparent",
+                            "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent",
+                            "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent"
+                          )}
+                        >
+                          <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
+                        </Button>
+                      </DialogTrigger>
+                      <HelpMeChooseDialog />
+                    </Dialog>
                   </div>
                   <PlanTypeSelector
                     plans={selectedPurifier.plans}
@@ -326,4 +331,3 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 PlanSelectionSection.displayName = 'PlanSelectionSection';
 export default PlanSelectionSection;
-
