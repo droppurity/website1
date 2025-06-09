@@ -7,6 +7,7 @@ const footerSections = [
   {
     title: 'Premium Drinking Water',
     links: [
+      { label: 'Home', href: '/' }, // Added Home link here
       { label: 'Plans', href: '/plans' },
       { label: 'How it works', href: '/#how-it-works' }, // Assuming an ID on the homepage
       { label: 'Droppurity Advantage', href: '/about#advantage' }, // Assuming an ID on about page
