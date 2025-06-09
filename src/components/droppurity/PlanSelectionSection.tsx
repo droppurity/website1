@@ -148,8 +148,7 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
-  const stickyHeaderTopClass = 'top-0'; 
-  const stickyCardTopClass = 'top-[7rem]'; // Adjust sticky card top if needed based on header height
+ const stickyCardTopClass = 'top-[7rem]'; // Adjust sticky card top if needed based on header height
 
 
   return (
@@ -165,7 +164,7 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
             </p>
         </header>
 
-        <div className={`sticky ${stickyHeaderTopClass} bg-background z-40 py-2 shadow-sm mb-6 sm:mb-10`}>
+        <div className={`sticky bg-background z-40 py-2 shadow-lg mb-6 sm:mb-10`} style={{ top: headerVisible ? '56px' : '0' }}>
           <PurifierSelector
             purifiers={purifiers}
             selectedPurifierId={selectedPurifierId}

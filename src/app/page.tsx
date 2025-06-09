@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Shield, Sparkles } from 'lucide-react';
 import PlanSelectionSection from '@/components/droppurity/PlanSelectionSection';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react'; // Added import
+
 const features = [
   {
     icon: CheckCircle,
