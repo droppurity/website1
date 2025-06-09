@@ -4,7 +4,7 @@ import { Sparkles, Star, Check, Atom } from 'lucide-react';
 
 // Updated Tenure Options
 export const tenureOptions: TenureOption[] = [
-  { id: '28d', durationDays: 28, durationMonths: 1, displayName: '28 days' },
+  { id: '28d', durationDays: 28, durationMonths: 1, displayName: '28 days', lockInNote: '12 Month Lock-in' },
   { id: '7m', durationDays: 210, durationMonths: 7, displayName: '7 Months', lockInNote: '7 Month Lock-in' },
   { id: '12m', durationDays: 360, durationMonths: 12, displayName: '12 Months', lockInNote: '12 Month Lock-in' },
 ];
@@ -96,7 +96,7 @@ export const purifiers: Purifier[] = [
         'https://placehold.co/100x100.png',
         'https://placehold.co/100x100.png',
     ],
-    storageCapacity: '10 Litre Storage', // Updated from 8 Litre
+    storageCapacity: '10 Litre Storage',
     keyFeatures: commonFeaturesList, // These are technical features, not plan benefits
     accentColor: 'blue',
     dataAiHint: 'ro water purifier',
@@ -144,7 +144,10 @@ export const defaultTenureId = tenureOptions[1].id; // Default to 7 Months (inde
 const getDefaultPlanForDefaultPurifier = () => {
     const defaultPurifier = purifiers.find(p => p.id === defaultPurifierId) || purifiers[0];
     const recommendedPlan = defaultPurifier.plans.find(plan => plan.recommended);
-    return recommendedPlan ? recommendedPlan.id : defaultPurifier.plans[0]?.id;
+    if (recommendedPlan) return recommendedPlan.id;
+    const basicPlan = defaultPurifier.plans.find(plan => plan.name.toLowerCase() === 'basic');
+    if (basicPlan) return basicPlan.id;
+    return defaultPurifier.plans[0]?.id;
 };
 
 export const defaultPlanId = getDefaultPlanForDefaultPurifier();
