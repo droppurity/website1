@@ -75,6 +75,16 @@ export default function Footer() {
                 Hatia, Near Nandan Palace,<br />
                 Ranchi - 834003
               </p>
+              <p className="text-sm text-primary-foreground/80 mt-2">
+                <strong>Patna Office:</strong><br />
+                East ram Krishna nagar,<br />
+                near gdm college, Patna - 800027.
+              </p>
+              <p className="text-sm text-primary-foreground/80 mt-2">
+                <strong>Bokaro Office:</strong><br />
+                Shivpuri colony, chas,<br />
+                Bokaro, Jharkhand - 827013.
+              </p>
             </div>
           </div>
 
