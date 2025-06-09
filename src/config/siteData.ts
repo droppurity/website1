@@ -46,12 +46,12 @@ const roPlusPricing: { [planName in 'Basic' | 'Value' | 'Commercial']: { [tenure
     '7m': { pricePerMonth: 299 },
     '12m': { pricePerMonth: 299, payingMonths: 12, additionalFeatures: ["+1 month free"] },
   },
-  Value: { 
+  Value: {
     '28d': { pricePerMonth: 549 },
     '7m': { pricePerMonth: 399 },
     '12m': { pricePerMonth: 399, payingMonths: 12, additionalFeatures: ["+1 month free"] },
   },
-  Commercial: { 
+  Commercial: {
     '28d': { pricePerMonth: 749 },
     '7m': { pricePerMonth: 599 },
     '12m': { pricePerMonth: 549, payingMonths: 12, additionalFeatures: ["+1 month free"] },
@@ -87,26 +87,11 @@ const generatePlansForPurifier = (
 
 export const purifiers: Purifier[] = [
   {
-    id: 'droppurity-ro-plus',
-    name: 'Droppurity RO+',
-    plans: generatePlansForPurifier('ro-plus', 0), 
-    image: 'https://placehold.co/600x400.png',
-    thumbnailImages: [
-        'https://placehold.co/100x100.png',
-        'https://placehold.co/100x100.png',
-        'https://placehold.co/100x100.png',
-    ],
-    storageCapacity: '10 Litre Storage',
-    keyFeatures: commonFeaturesList, // These are technical features, not plan benefits
-    accentColor: 'blue',
-    dataAiHint: 'ro water purifier',
-  },
-  {
     id: 'droppurity-copper',
     name: 'Droppurity Copper',
     tagline: 'Bestseller',
     taglineIcon: Sparkles,
-    plans: generatePlansForPurifier('copper', 85), 
+    plans: generatePlansForPurifier('copper', 85),
     image: 'https://placehold.co/600x400.png',
     thumbnailImages: [
         'https://placehold.co/100x100.png',
@@ -119,11 +104,26 @@ export const purifiers: Purifier[] = [
     dataAiHint: 'copper water purifier',
   },
   {
+    id: 'droppurity-ro-plus',
+    name: 'Droppurity RO+',
+    plans: generatePlansForPurifier('ro-plus', 0),
+    image: 'https://placehold.co/600x400.png',
+    thumbnailImages: [
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+        'https://placehold.co/100x100.png',
+    ],
+    storageCapacity: '10 Litre Storage',
+    keyFeatures: commonFeaturesList, // These are technical features, not plan benefits
+    accentColor: 'blue',
+    dataAiHint: 'ro water purifier',
+  },
+  {
     id: 'droppurity-alkaline',
     name: 'Droppurity Alkaline',
     tagline: 'Popular choice',
     taglineIcon: Star,
-    plans: generatePlansForPurifier('alkaline', 75), 
+    plans: generatePlansForPurifier('alkaline', 75),
     image: 'https://placehold.co/600x400.png',
      thumbnailImages: [
         'https://placehold.co/100x100.png',
@@ -137,18 +137,17 @@ export const purifiers: Purifier[] = [
   },
 ];
 
-export const defaultPurifierId = purifiers[0].id; 
+export const defaultPurifierId = 'droppurity-ro-plus';
 export const defaultTenureId = tenureOptions[1].id; // Default to 7 Months (index 1)
 
-// Find the default plan (e.g., the "Value" plan or the first one if Value isn't found) for the default purifier
+// Find the default plan (e.g., the "Basic" plan or the first one if Basic isn't found) for the default purifier
 const getDefaultPlanForDefaultPurifier = () => {
     const defaultPurifier = purifiers.find(p => p.id === defaultPurifierId) || purifiers[0];
-    const recommendedPlan = defaultPurifier.plans.find(plan => plan.recommended);
-    if (recommendedPlan) return recommendedPlan.id;
     const basicPlan = defaultPurifier.plans.find(plan => plan.name.toLowerCase() === 'basic');
     if (basicPlan) return basicPlan.id;
+    const recommendedPlan = defaultPurifier.plans.find(plan => plan.recommended);
+    if (recommendedPlan) return recommendedPlan.id;
     return defaultPurifier.plans[0]?.id;
 };
 
 export const defaultPlanId = getDefaultPlanForDefaultPurifier();
-
