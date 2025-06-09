@@ -218,7 +218,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground">Step 1: Choose Your Plan</h3>
-                    <Button variant="outline" size="sm" className="text-xs text-dynamic-accent border-dynamic-accent hover:bg-dynamic-accent/10 hover:text-dynamic-accent">
+                    <Button variant="outline" size="sm" className="text-xs text-foreground border-dynamic-accent hover:bg-dynamic-accent/10 hover:text-foreground">
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
                     </Button>
                   </div>
