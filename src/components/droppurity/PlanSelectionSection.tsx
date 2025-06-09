@@ -50,7 +50,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
     setCurrentImageIndex(0); // Reset index when purifier changes
     startAutoScrollTimer(); // Start/Restart timer for new purifier
     return () => clearAutoScrollTimer(); // Cleanup on component unmount
-  }, [purifier]); // Rerun when purifier changes
+  }, [purifier, allImages.length]); // Rerun when purifier or allImages.length changes
 
 
   const handleThumbnailClick = (index: number) => {
@@ -75,9 +75,9 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
 
 
   return (
-    <Card className={`shadow-xl overflow-hidden ${imageDisplayThemeClass}`}>
+    <Card className={`shadow-xl overflow-hidden border-0 ${imageDisplayThemeClass}`}>
       <CardContent className="p-4 sm:p-6">
-        <div className="relative aspect-[4/3] mb-4">
+        <div className="relative aspect-square mb-4"> {/* Changed from aspect-[4/3] */}
           <Image
             src={mainDisplayImage}
             alt={purifier.name}
