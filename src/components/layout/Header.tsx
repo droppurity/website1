@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Droplet, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react'; // Keep useEffect for isClient if needed for other things, but not scroll
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -16,40 +16,16 @@ const navItems = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const lastScrollY = useRef(0);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    if (!isClient) {
-      return;
-    }
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) { // Hide after scrolling down 50px
-        setIsHeaderVisible(false);
-      } else if (currentScrollY < lastScrollY.current || currentScrollY <= 10) { // Show on scroll up or near top
-        setIsHeaderVisible(true);
-      }
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isClient]);
-
+  // Removed scroll-based auto-hiding logic. Header is now always visible when rendered.
   return (
     <header
-      className={`bg-card shadow-sm sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
-        isHeaderVisible ? 'transform-none' : '-translate-y-full'
-      }`}
+      className="bg-card shadow-sm sticky top-0 z-50" // Always sticky, no transform
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Shield, Sparkles } from 'lucide-react';
 import PlanSelectionSection from '@/components/droppurity/PlanSelectionSection';
-import { useState, useEffect, useRef } from 'react'; // Added import
+import { useState, useEffect, useRef } from 'react';
 
 const features = [
   {
@@ -30,33 +30,11 @@ const features = [
   },
 ];
 
-const HEADER_HEIGHT = 56; // Corresponds to h-14 in Tailwind CSS
-
 export default function HomePage() {
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      // Only update visibility if scrolled past a threshold to avoid flicker near the top
-      if (Math.abs(currentScrollY - lastScrollY.current) > 10) {
-         if (currentScrollY > lastScrollY.current && currentScrollY > HEADER_HEIGHT) { // Hide header when scrolling down and past header height
-          setIsHeaderVisible(false);
-        } else if (currentScrollY < lastScrollY.current || currentScrollY <= HEADER_HEIGHT) { // Show header when scrolling up or near top
-          setIsHeaderVisible(true);
-        }
-      }
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  // Removed isHeaderVisible and lastScrollY state for auto-hiding header effect, as header is now always visible.
+  // The pt-14 class on the root div accounts for the fixed header height.
   return (
-    <div className={`flex flex-col ${isHeaderVisible ? 'pt-14' : 'pt-0'}`}> {/* Add conditional padding */}
+    <div className="flex flex-col pt-14"> {/* Consistent padding for fixed header */}
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 bg-gradient-to-br from-primary/20 via-background to-background">
         <div className="absolute inset-0 opacity-30">
