@@ -27,11 +27,11 @@ export default function PlanTypeSelector({
         return (
           <Button
             key={plan.id}
-            variant={isSelected ? "default" : "outline"}
+            variant={isSelected ? "ghost" : "outline"} // Changed from "default" to "ghost" for selected
             onClick={() => onSelectPlan(plan.id)}
             className={`h-auto px-3 py-2 sm:px-4 sm:py-3 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 
               ${isSelected 
-                ? 'bg-dynamic-accent text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent' 
+                ? 'bg-dynamic-accent text-dynamic-accent-foreground border-dynamic-accent hover:bg-dynamic-accent/90 ring-dynamic-accent' // Ensured hover uses dynamic accent
                 : 'bg-card text-foreground border-border hover:bg-muted/50 hover:border-muted-foreground'
               }
             `}
