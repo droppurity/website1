@@ -68,6 +68,7 @@ export default {
         },
         'dynamic-accent': 'hsl(var(--dynamic-accent-hsl-values))',
         'dynamic-accent-foreground': 'hsl(var(--dynamic-accent-foreground-hsl-values))',
+        'light-dynamic-accent': 'hsl(var(--light-dynamic-accent-bg-hsl-values))',
         'gradient-start': 'hsl(var(--gradient-start-hsl-values))',
         'gradient-end': 'hsl(var(--gradient-end-hsl-values))',
       },

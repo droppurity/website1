@@ -44,6 +44,8 @@
     /* Dynamic accent colors */
     --dynamic-accent-hsl-values: 210 90% 55%; /* Default to primary blue HSL values */
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
+    --light-dynamic-accent-bg-hsl-values: 210 100% 95%; /* Default light blue for unselected bg */
+
 
     /* Gradient variables for dynamic accent */
     --gradient-start-hsl-values: var(--dynamic-accent-hsl-values); /* Default to current dynamic accent */
@@ -51,6 +53,7 @@
 
     --dynamic-accent: hsl(var(--dynamic-accent-hsl-values));
     --dynamic-accent-foreground: hsl(var(--dynamic-accent-foreground-hsl-values));
+    --light-dynamic-accent-bg: hsl(var(--light-dynamic-accent-bg-hsl-values));
     --gradient-start: hsl(var(--gradient-start-hsl-values));
     --gradient-end: hsl(var(--gradient-end-hsl-values));
   }
@@ -86,6 +89,8 @@
 
     --dynamic-accent-hsl-values: 210 90% 60%;
     --dynamic-accent-foreground-hsl-values: 220 30% 5%;
+    --light-dynamic-accent-bg-hsl-values: 210 90% 15%; /* Darker light blue for dark mode */
+
 
     /* Gradient variables for dynamic accent in dark mode */
     --gradient-start-hsl-values: var(--dynamic-accent-hsl-values); /* Default to current dynamic accent in dark mode */
@@ -95,15 +100,33 @@
   .theme-teal {
     --dynamic-accent-hsl-values: 170 60% 45%;
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
+    --light-dynamic-accent-bg-hsl-values: 170 60% 92%; /* Light Teal */
     --gradient-start-hsl-values: 170 60% 45%; /* Teal */
     --gradient-end-hsl-values: 170 60% 35%; /* Darker Teal */
+  }
+
+  .dark .theme-teal {
+    --dynamic-accent-hsl-values: 170 60% 50%;
+    --dynamic-accent-foreground-hsl-values: 200 100% 5%;
+    --light-dynamic-accent-bg-hsl-values: 170 60% 18%; /* Darker light teal for dark mode */
+    --gradient-start-hsl-values: 170 60% 50%; 
+    --gradient-end-hsl-values: 170 60% 40%; 
   }
 
   .theme-copper {
     --dynamic-accent-hsl-values: 30 70% 50%; 
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
+    --light-dynamic-accent-bg-hsl-values: 30 70% 92%; /* Light Copper */
     --gradient-start-hsl-values: 30 70% 50%; /* Copper */
     --gradient-end-hsl-values: 30 70% 40%; /* Darker Copper */
+  }
+
+  .dark .theme-copper {
+    --dynamic-accent-hsl-values: 30 70% 55%;
+    --dynamic-accent-foreground-hsl-values: 20 100% 5%;
+    --light-dynamic-accent-bg-hsl-values: 30 70% 18%; /* Darker light copper for dark mode */
+    --gradient-start-hsl-values: 30 70% 55%;
+    --gradient-end-hsl-values: 30 70% 45%;
   }
 }
 

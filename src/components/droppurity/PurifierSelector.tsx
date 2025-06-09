@@ -16,7 +16,7 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <div className="w-full flex items-center justify-center gap-3 sm:gap-4 overflow-x-auto md:flex-wrap no-scrollbar">
+    <div className="w-full flex items-center justify-center gap-3 sm:gap-4 overflow-x-auto md:flex-wrap no-scrollbar py-3">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
@@ -36,12 +36,12 @@ export default function PurifierSelector({
               </div>
             )}
             <Button
-              variant={isSelected ? "default" : "outline"}
+              variant={"outline"} // Base variant, specific styles applied via className
               onClick={() => onSelectPurifier(purifier.id)}
               className={`h-auto px-2 py-1.5 md:px-3.5 md:py-2.5 shadow-sm transition-all duration-200 ease-in-out focus:ring-2 focus:ring-ring focus:ring-offset-2 mt-4
                 ${isSelected 
-                  ? 'bg-gradient-to-br from-gradient-start to-gradient-end text-dynamic-accent-foreground border-dynamic-accent ring-dynamic-accent' 
-                  : 'bg-muted/30 text-muted-foreground/80 border-border/50 hover:bg-muted/50 hover:text-muted-foreground hover:border-border/70'
+                  ? 'bg-gradient-to-br from-gradient-start to-gradient-end text-dynamic-accent-foreground border-dynamic-accent ring-2 ring-dynamic-accent' 
+                  : 'bg-light-dynamic-accent text-dynamic-accent border-dynamic-accent/40 hover:bg-dynamic-accent/20 hover:text-dynamic-accent hover:border-dynamic-accent/60'
                 }
               `}
             >
