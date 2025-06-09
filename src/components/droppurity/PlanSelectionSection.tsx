@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, forwardRef } from 'react'; // Added React and forwardRef
 import Image from 'next/image';
 import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId } from '@/config/siteData';
 import type { Purifier as PurifierType, Plan as PlanType, TenureOption as TenureType } from '@/lib/types';
@@ -15,9 +15,12 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Droplet, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
-// Removed headerVisible from props
-interface PlanSelectionSectionProps {}
+
+interface PlanSelectionSectionProps {
+  isHeaderDominant?: boolean;
+}
 
 function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const allImages = useMemo(() => (purifier.thumbnailImages && purifier.thumbnailImages.length > 0
@@ -45,7 +48,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const mainDisplayImage = allImages[currentImageIndex] || purifier.image;
   const imageDisplayThemeClass = purifier.accentColor === 'copper' ? 'theme-copper'
                              : purifier.accentColor === 'teal' ? 'theme-teal'
-                             : 'theme-blue'; // Explicitly set to theme-blue for default
+                             : 'theme-blue'; 
 
 
   return (
@@ -98,7 +101,8 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
 }
 
 
-export default function PlanSelectionSection({}: PlanSelectionSectionProps) { // Removed headerVisible from destructuring
+const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProps>(
+  ({ isHeaderDominant }, ref) => {
   const [selectedPurifierId, setSelectedPurifierId] = useState<string>(defaultPurifierId);
   const [selectedTenureId, setSelectedTenureId] = useState<string>(defaultTenureId);
   
@@ -145,19 +149,15 @@ export default function PlanSelectionSection({}: PlanSelectionSectionProps) { //
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
-  // Set stickyCardTopClass to a fixed value as the purifier bar will always be top:0 when sticky
+  
   const stickyCardTopClass = 'top-[7rem]'; 
 
 
   useEffect(() => {
-    // Apply theme class to body for consistent dynamic accent colors across the page
-    // Remove previous theme classes
     document.body.classList.remove('theme-blue', 'theme-teal', 'theme-copper');
-    // Add current theme class
     if (overallThemeClass) {
       document.body.classList.add(overallThemeClass);
     }
-    // Cleanup on component unmount
     return () => {
       if (overallThemeClass) {
         document.body.classList.remove(overallThemeClass);
@@ -167,7 +167,7 @@ export default function PlanSelectionSection({}: PlanSelectionSectionProps) { //
 
 
   return (
-    <div className={`py-6 sm:py-10 bg-background ${overallThemeClass}`}>
+    <div ref={ref} className={`py-6 sm:py-10 bg-background ${overallThemeClass}`}>
       <div className="container mx-auto px-4">
         <header className="text-center mb-6 sm:mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold font-headline text-foreground flex items-center justify-center">
@@ -179,8 +179,12 @@ export default function PlanSelectionSection({}: PlanSelectionSectionProps) { //
             </p>
         </header>
 
-        {/* Sticky bar now always uses top: '0' */}
-        <div className={`sticky bg-background z-40 py-2 shadow-lg mb-6 sm:mb-10`} style={{ top: '0' }}>
+        
+        <div className={cn(
+            "sticky bg-background py-2 shadow-lg mb-6 sm:mb-10 z-40",
+            isHeaderDominant && "z-[51]"
+          )} 
+          style={{ top: '0' }}>
           <PurifierSelector
             purifiers={purifiers}
             selectedPurifierId={selectedPurifierId}
@@ -259,5 +263,7 @@ export default function PlanSelectionSection({}: PlanSelectionSectionProps) { //
       `}</style>
     </div>
   );
-}
+});
 
+PlanSelectionSection.displayName = 'PlanSelectionSection';
+export default PlanSelectionSection;

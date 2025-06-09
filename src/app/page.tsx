@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Shield, Sparkles } from 'lucide-react';
 import PlanSelectionSection from '@/components/droppurity/PlanSelectionSection';
-import { useState, useEffect, useRef } from 'react'; // Added useRef
+import { useState, useEffect, useRef } from 'react';
 
 const features = [
   {
@@ -31,8 +31,29 @@ const features = [
 ];
 
 export default function HomePage() {
+  const planSectionRef = useRef<HTMLDivElement>(null);
+  const [makePlanSectionHeaderDominant, setMakePlanSectionHeaderDominant] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (planSectionRef.current) {
+        const sectionTop = planSectionRef.current.offsetTop;
+        const headerHeight = 56; // Approx height of main header (3.5rem)
+        
+        if (window.scrollY >= sectionTop - headerHeight) {
+          setMakePlanSectionHeaderDominant(true);
+        } else {
+          setMakePlanSectionHeaderDominant(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="flex flex-col pt-14"> {/* Added pt-14 */}
+    <div className="flex flex-col pt-14">
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 bg-gradient-to-br from-primary/20 via-background to-background">
         <div className="absolute inset-0 opacity-30">
@@ -107,7 +128,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <PlanSelectionSection /> {/* Removed headerVisible prop */}
+      <PlanSelectionSection ref={planSectionRef} isHeaderDominant={makePlanSectionHeaderDominant} />
 
       {/* Call to Action Section */}
       <section className="py-16 sm:py-24 bg-background">
