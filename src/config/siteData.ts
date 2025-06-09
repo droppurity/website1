@@ -44,17 +44,17 @@ const roPlusPricing: { [planName in 'Basic' | 'Value' | 'Commercial']: { [tenure
   Basic: {
     '28d': { pricePerMonth: 449 },
     '7m': { pricePerMonth: 299 },
-    '12m': { pricePerMonth: 299, payingMonths: 11, additionalFeatures: ["+1 month free"] },
+    '12m': { pricePerMonth: 299, payingMonths: 12, additionalFeatures: ["+1 month free"] },
   },
   Value: { 
     '28d': { pricePerMonth: 549 },
     '7m': { pricePerMonth: 399 },
-    '12m': { pricePerMonth: 399, payingMonths: 11, additionalFeatures: ["+1 month free"] },
+    '12m': { pricePerMonth: 399, payingMonths: 12, additionalFeatures: ["+1 month free"] },
   },
   Commercial: { 
     '28d': { pricePerMonth: 749 },
     '7m': { pricePerMonth: 599 },
-    '12m': { pricePerMonth: 549, payingMonths: 11, additionalFeatures: ["+1 month free"] }, // Changed payingMonths to 11 and additionalFeatures to "+1 month free"
+    '12m': { pricePerMonth: 549, payingMonths: 12, additionalFeatures: ["+1 month free"] },
   },
 };
 
@@ -151,3 +151,4 @@ const getDefaultPlanForDefaultPurifier = () => {
 };
 
 export const defaultPlanId = getDefaultPlanForDefaultPurifier();
+
