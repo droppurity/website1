@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useMemo, useEffect, forwardRef } from 'react';
+import React, { useState, useMemo, useEffect, forwardRef, useRef } from 'react';
 import Image from 'next/image';
 import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId } from '@/config/siteData';
 import type { Purifier as PurifierType, Plan as PlanType, TenureOption as TenureType } from '@/lib/types';
@@ -28,21 +28,44 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
     : [purifier.image]), [purifier]);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const autoScrollTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const clearAutoScrollTimer = () => {
+    if (autoScrollTimerRef.current) {
+      clearInterval(autoScrollTimerRef.current);
+      autoScrollTimerRef.current = null;
+    }
+  };
+
+  const startAutoScrollTimer = () => {
+    clearAutoScrollTimer();
+    if (allImages.length > 1) {
+      autoScrollTimerRef.current = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+      }, 4000); // Auto-scroll every 4 seconds
+    }
+  };
 
   useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [purifier]);
+    setCurrentImageIndex(0); // Reset index when purifier changes
+    startAutoScrollTimer(); // Start/Restart timer for new purifier
+    return () => clearAutoScrollTimer(); // Cleanup on component unmount
+  }, [purifier]); // Rerun when purifier changes
+
 
   const handleThumbnailClick = (index: number) => {
     setCurrentImageIndex(index);
+    startAutoScrollTimer(); // Restart timer on manual interaction
   };
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    startAutoScrollTimer();
   };
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    startAutoScrollTimer();
   };
 
   const mainDisplayImage = allImages[currentImageIndex] || purifier.image;
@@ -61,6 +84,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
             layout="fill"
             objectFit="contain"
             className="rounded-lg"
+            priority // Consider adding priority if this is LCP for the view
             data-ai-hint={purifier.dataAiHint || "water purifier"}
           />
           {purifier.storageCapacity && (
@@ -68,30 +92,49 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
               {purifier.storageCapacity}
             </div>
           )}
-          {allImages.length > 1 && (
-            <>
-              <Button variant="ghost" size="icon" onClick={prevImage} className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80">
-                <ChevronLeft className="w-6 h-6" />
-              </Button>
-              <Button variant="ghost" size="icon" onClick={nextImage} className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80">
-                <ChevronRight className="w-6 h-6" />
-              </Button>
-            </>
-          )}
         </div>
         {allImages.length > 1 && (
-           <div className="relative">
-            <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-2 no-scrollbar">
-              {allImages.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleThumbnailClick(index)}
-                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden border-2 transition-all shrink-0
-                    ${index === currentImageIndex ? 'border-dynamic-accent ring-2 ring-dynamic-accent' : 'border-border hover:border-muted-foreground'}`}
-                >
-                  <Image src={img} alt={`${purifier.name} thumbnail ${index + 1}`} width={80} height={80} className="object-contain w-full h-full" />
-                </button>
-              ))}
+           <div className="mt-2">
+            <div className="flex items-center justify-between">
+              <Button 
+                onClick={prevImage} 
+                variant="ghost" 
+                size="icon" 
+                className="text-muted-foreground hover:text-foreground disabled:opacity-30 p-1" 
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              </Button>
+
+              <div className="flex-grow overflow-hidden px-1 mx-1">
+                <div className="flex items-center justify-center space-x-2 overflow-x-auto pb-1 no-scrollbar">
+                  {allImages.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleThumbnailClick(index)}
+                      className={cn(
+                        "w-14 h-14 sm:w-16 sm:h-16 rounded-md overflow-hidden border-2 transition-all shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-1",
+                        index === currentImageIndex 
+                          ? 'border-dynamic-accent ring-dynamic-accent' 
+                          : 'border-border hover:border-muted-foreground focus:ring-ring'
+                      )}
+                      aria-label={`View image ${index + 1} of ${purifier.name}`}
+                    >
+                      <Image src={img} alt={`${purifier.name} thumbnail ${index + 1}`} width={64} height={64} className="object-contain w-full h-full" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <Button 
+                onClick={nextImage} 
+                variant="ghost" 
+                size="icon" 
+                className="text-muted-foreground hover:text-foreground disabled:opacity-30 p-1" 
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              </Button>
             </div>
           </div>
         )}
@@ -147,7 +190,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
     if (selectedPlanId !== newSelectedPlanId) {
       setSelectedPlanId(newSelectedPlanId);
     }
-  }, [selectedPurifier, selectedPlanId]); // Added selectedPlanId to dependencies
+  }, [selectedPurifier, selectedPlanId]);
 
 
   const selectedPlan = useMemo(
@@ -216,9 +259,9 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className={cn(
-                        "text-xs",
-                        "text-dynamic-accent border-dynamic-accent", // Normal state
+                       className={cn(
+                        "text-xs border-dynamic-accent",
+                        "text-dynamic-accent bg-transparent", // Normal state text and border
                         "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", // Hover state
                         "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" // Focus state
                       )}
