@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useMemo, useEffect, forwardRef } from 'react'; 
+import React, { useState, useMemo, useEffect, forwardRef } from 'react';
 import Image from 'next/image';
 import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId } from '@/config/siteData';
 import type { Purifier as PurifierType, Plan as PlanType, TenureOption as TenureType } from '@/lib/types';
@@ -30,7 +30,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    setCurrentImageIndex(0); 
+    setCurrentImageIndex(0);
   }, [purifier]);
 
   const handleThumbnailClick = (index: number) => {
@@ -44,11 +44,11 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
-  
+
   const mainDisplayImage = allImages[currentImageIndex] || purifier.image;
   const imageDisplayThemeClass = purifier.accentColor === 'copper' ? 'theme-copper'
                              : purifier.accentColor === 'teal' ? 'theme-teal'
-                             : 'theme-blue'; 
+                             : 'theme-blue';
 
 
   return (
@@ -105,7 +105,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   ({ isHeaderDominant }, ref) => {
   const [selectedPurifierId, setSelectedPurifierId] = useState<string>(defaultPurifierId);
   const [selectedTenureId, setSelectedTenureId] = useState<string>(defaultTenureId);
-  
+
   const selectedPurifier = useMemo(
     () => purifiers.find(p => p.id === selectedPurifierId) || purifiers[0],
     [selectedPurifierId]
@@ -132,14 +132,27 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
         if (basicPlan) {
             defaultPlanIdToSet = basicPlan.id;
         } else if (currentPurifierPlans.length > 0) {
-            defaultPlanIdToSet = currentPurifierPlans[0].id; 
+            defaultPlanIdToSet = currentPurifierPlans[0].id;
         }
     }
 
-    if (defaultPlanIdToSet) {
-        setSelectedPlanId(defaultPlanIdToSet);
+    // Only set if a valid plan ID was found, and it's different from the current
+    if (defaultPlanIdToSet && defaultPlanIdToSet !== selectedPlanId) {
+        // Check if the current selectedPlanId is even valid for the new purifier
+        const currentSelectedPlanIsValidForNewPurifier = currentPurifierPlans.some(p => p.id === selectedPlanId);
+        if (!currentSelectedPlanIsValidForNewPurifier) {
+            setSelectedPlanId(defaultPlanIdToSet);
+        }
+        // If current selected plan is valid, user might have explicitly chosen it, so don't override.
+        // The above logic might need refinement if we want to *always* switch to recommended/basic on purifier change.
+        // For now, it only changes if the current selection becomes invalid.
+    } else if (currentPurifierPlans.length > 0 && !currentPurifierPlans.some(p => p.id === selectedPlanId)) {
+        // Fallback if current selectedPlanId is not in the new purifier's plans
+        setSelectedPlanId(currentPurifierPlans[0].id);
     }
-  }, [selectedPurifierId, selectedPurifier.plans]);
+
+
+  }, [selectedPurifierId, selectedPurifier.plans, selectedPlanId]);
 
 
   const selectedPlan = useMemo(
@@ -155,31 +168,18 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   const overallThemeClass = useMemo(() => {
     if (selectedPurifier.accentColor === 'copper') return 'theme-copper';
     if (selectedPurifier.accentColor === 'teal') return 'theme-teal';
-    return 'theme-blue'; 
+    return 'theme-blue';
   }, [selectedPurifier.accentColor]);
 
   const displayPurifierPlanName = useMemo(() => {
     if (selectedPurifier && selectedPlan) {
       return `${selectedPurifier.name} - ${selectedPlan.name}`;
     }
-    return selectedPurifier?.name || ""; 
+    return selectedPurifier?.name || "";
   }, [selectedPurifier, selectedPlan]);
 
-  
-  const stickyCardTopClass = 'top-[7rem]'; 
 
-
-  useEffect(() => {
-    document.body.classList.remove('theme-blue', 'theme-teal', 'theme-copper');
-    if (overallThemeClass) {
-      document.body.classList.add(overallThemeClass);
-    }
-    return () => {
-      if (overallThemeClass) {
-        document.body.classList.remove(overallThemeClass);
-      }
-    };
-  }, [overallThemeClass]);
+  const stickyCardTopClass = 'top-[7rem]';
 
 
   return (
@@ -195,11 +195,11 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
             </p>
         </header>
 
-        
+
         <div className={cn(
             "sticky bg-background py-2 shadow-lg mb-6 sm:mb-10 z-40",
             isHeaderDominant && "z-[51]"
-          )} 
+          )}
           style={{ top: '0' }}>
           <PurifierSelector
             purifiers={purifiers}
@@ -221,7 +221,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                 <p className="text-sm text-muted-foreground">Security deposit of ₹1,500 will be 100% refundable.</p>
               </CardHeader>
               <CardContent className="p-4 sm:p-6 space-y-6">
-                
+
                 <Separator />
                 <div>
                   <div className="flex justify-between items-center mb-3">
@@ -236,7 +236,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                     onSelectPlan={setSelectedPlanId}
                   />
                 </div>
-                
+
                 <Separator />
 
                 <div>
@@ -250,7 +250,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                   />
                 </div>
                 <Separator />
-                
+
                 {selectedPlan && selectedTenure ? (
                   <PlanCard
                     plan={selectedPlan}
@@ -262,7 +262,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                     Please make your selections to see plan details.
                   </div>
                 )}
-                
+
               </CardContent>
             </Card>
           </div>
@@ -273,8 +273,8 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
           display: none;
         }
         .no-scrollbar {
-          -ms-overflow-style: none; 
-          scrollbar-width: none; 
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
@@ -283,4 +283,3 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 PlanSelectionSection.displayName = 'PlanSelectionSection';
 export default PlanSelectionSection;
-
