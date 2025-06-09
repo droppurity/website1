@@ -44,9 +44,14 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   };
   
   const mainDisplayImage = allImages[currentImageIndex] || purifier.image;
+  // Determine the theme class based on the selected purifier for the image display context
+  const imageDisplayThemeClass = purifier.accentColor === 'copper' ? 'theme-copper'
+                             : purifier.accentColor === 'teal' ? 'theme-teal'
+                             : '';
+
 
   return (
-    <Card className="shadow-xl overflow-hidden">
+    <Card className={`shadow-xl overflow-hidden ${imageDisplayThemeClass}`}>
       <CardContent className="p-4 sm:p-6">
         <div className="relative aspect-[4/3] mb-4">
           <Image
@@ -129,7 +134,8 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     [selectedTenureId]
   );
 
-  const themeAccentClass = useMemo(() => {
+  // Theme class for components that should reflect the overall selected purifier's theme
+  const overallThemeClass = useMemo(() => {
     if (selectedPurifier.accentColor === 'copper') return 'theme-copper';
     if (selectedPurifier.accentColor === 'teal') return 'theme-teal';
     return ''; 
@@ -142,14 +148,12 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
-  // Main header is h-14 (3.5rem)
-  // Sticky selector bar approx height is ~7rem
   const stickyHeaderTopClass = headerVisible ? 'top-14' : 'top-0'; 
   const stickyCardTopClass = headerVisible ? 'top-[10.5rem]' : 'top-[7rem]';
 
 
   return (
-    <div className={`${themeAccentClass} py-6 sm:py-10 bg-background`}>
+    <div className={`py-6 sm:py-10 bg-background ${overallThemeClass}`}> {/* Apply overall theme here for children like PlanCard */}
       <div className="container mx-auto px-4">
         <header className="text-center mb-6 sm:mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold font-headline text-foreground flex items-center justify-center">
@@ -167,11 +171,12 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
-          <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" />
+          <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" /> {/* KeyFeaturesDisplay will use the overall theme */}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
+             {/* Pass selectedPurifier here, it will apply its own theme for border/ring internally */}
             <PurifierImageDisplay purifier={selectedPurifier} />
           </div>
 
