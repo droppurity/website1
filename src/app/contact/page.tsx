@@ -112,9 +112,6 @@ export default function ContactPage() {
                   <MapPin className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-foreground">Visit Us</h3>
-                    <p className="text-muted-foreground">
-                      123 PureWater Ave, Aqua City, WTR 45678 (Placeholder Address)
-                    </p>
                   </div>
                 </div>
               </CardContent>
