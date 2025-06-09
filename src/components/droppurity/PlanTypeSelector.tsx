@@ -38,10 +38,11 @@ export default function PlanTypeSelector({
              style={{minWidth: '100px'}} 
           >
             <span className="text-sm font-medium">{plan.name}</span>
-            <span className="text-xs text-muted-foreground/80 ml-1">({limitText})</span>
+            <span className={`text-xs ml-1 ${isSelected ? 'text-dynamic-accent-foreground/80' : 'text-muted-foreground/80'}`}>({limitText})</span>
           </Button>
         );
       })}
     </div>
   );
 }
+

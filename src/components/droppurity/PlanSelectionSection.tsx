@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useMemo, useEffect, forwardRef } from 'react'; // Added React and forwardRef
+import React, { useState, useMemo, useEffect, forwardRef } from 'react'; 
 import Image from 'next/image';
 import { purifiers, tenureOptions, defaultPurifierId, defaultTenureId } from '@/config/siteData';
 import type { Purifier as PurifierType, Plan as PlanType, TenureOption as TenureType } from '@/lib/types';
@@ -114,14 +114,30 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   const [selectedPlanId, setSelectedPlanId] = useState<string>(() => {
     const initialPurifier = purifiers.find(p => p.id === defaultPurifierId) || purifiers[0];
     const recommendedPlan = initialPurifier.plans.find(p => p.recommended);
-    return recommendedPlan?.id || initialPurifier.plans[0]?.id || '';
+    if (recommendedPlan) return recommendedPlan.id;
+    const basicPlan = initialPurifier.plans.find(p => p.name.toLowerCase() === 'basic');
+    if (basicPlan) return basicPlan.id;
+    return initialPurifier.plans[0]?.id || '';
   });
 
   useEffect(() => {
-    const currentPurifierRecommendedPlan = selectedPurifier.plans.find(p => p.recommended);
-    const defaultPlanForCurrentPurifier = currentPurifierRecommendedPlan?.id || selectedPurifier.plans[0]?.id;
-    if (defaultPlanForCurrentPurifier) {
-      setSelectedPlanId(defaultPlanForCurrentPurifier);
+    const currentPurifierPlans = selectedPurifier.plans;
+    let defaultPlanIdToSet = '';
+
+    const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
+    if (recommendedPlan) {
+        defaultPlanIdToSet = recommendedPlan.id;
+    } else {
+        const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
+        if (basicPlan) {
+            defaultPlanIdToSet = basicPlan.id;
+        } else if (currentPurifierPlans.length > 0) {
+            defaultPlanIdToSet = currentPurifierPlans[0].id; 
+        }
+    }
+
+    if (defaultPlanIdToSet) {
+        setSelectedPlanId(defaultPlanIdToSet);
     }
   }, [selectedPurifierId, selectedPurifier.plans]);
 
@@ -267,3 +283,4 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 PlanSelectionSection.displayName = 'PlanSelectionSection';
 export default PlanSelectionSection;
+
