@@ -148,8 +148,8 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
-  const stickyHeaderTopClass = headerVisible ? 'top-14' : 'top-0'; 
-  const stickyCardTopClass = headerVisible ? 'top-[10.5rem]' : 'top-[7rem]';
+  const stickyHeaderTopClass = 'top-0'; 
+  const stickyCardTopClass = 'top-[7rem]'; // Adjust sticky card top if needed based on header height
 
 
   return (
