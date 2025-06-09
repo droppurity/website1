@@ -77,7 +77,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   return (
     <Card className={`shadow-xl overflow-hidden border-0 ${imageDisplayThemeClass}`}>
       <CardContent className="p-4 sm:p-6">
-        <div className="relative aspect-square mb-4"> {/* Changed from aspect-[4/3] */}
+        <div className="relative aspect-square mb-4">
           <Image
             src={mainDisplayImage}
             alt={purifier.name}
@@ -170,27 +170,31 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   useEffect(() => {
     const currentPurifierPlans = selectedPurifier.plans;
     if (!currentPurifierPlans || currentPurifierPlans.length === 0) {
-      setSelectedPlanId('');
+      setSelectedPlanId(''); // Handle case of no plans for the purifier
       return;
     }
 
     let newSelectedPlanId = '';
+    // Try to find 'Basic' plan
     const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
     if (basicPlan) {
       newSelectedPlanId = basicPlan.id;
     } else {
+      // If 'Basic' not found, try to find a 'recommended' plan
       const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
       if (recommendedPlan) {
         newSelectedPlanId = recommendedPlan.id;
       } else {
+        // If no 'Basic' or 'recommended', take the first available plan
         newSelectedPlanId = currentPurifierPlans[0]?.id || '';
       }
     }
     
-    if (selectedPlanId !== newSelectedPlanId) {
-      setSelectedPlanId(newSelectedPlanId);
-    }
-  }, [selectedPurifier, selectedPlanId]);
+    // Set the selected plan ID. This will run whenever selectedPurifier changes.
+    // It ensures that the plan selection is appropriate for the new purifier.
+    setSelectedPlanId(newSelectedPlanId); 
+
+  }, [selectedPurifier]); // Only depends on selectedPurifier
 
 
   const selectedPlan = useMemo(
