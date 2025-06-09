@@ -2,34 +2,35 @@
 "use client";
 
 import type { Feature, Purifier } from '@/lib/types';
-import { useIsMobile } from '@/hooks/use-mobile';
+// Removed useIsMobile import as it's no longer needed here
 import { useEffect, useState } from 'react';
 import AnimatedFeature from './AnimatedFeature';
 import { Check } from 'lucide-react';
 
 interface KeyFeaturesDisplayProps {
   purifier?: Purifier;
-  className?: string; 
+  className?: string;
+  displayMode: 'animate' | 'list'; // New prop
 }
 
-export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesDisplayProps) {
-  const isMobile = useIsMobile();
+export default function KeyFeaturesDisplay({ purifier, className, displayMode }: KeyFeaturesDisplayProps) {
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   const features = purifier?.keyFeatures || [];
 
   useEffect(() => {
-    setCurrentFeatureIndex(0);
+    setCurrentFeatureIndex(0); // Reset index if features change (e.g. purifier changes)
   }, [features]);
 
   useEffect(() => {
-    if (isMobile && features.length > 0) {
+    // Animation timer now depends on displayMode and features length
+    if (displayMode === 'animate' && features.length > 0) {
       const timer = setInterval(() => {
         setCurrentFeatureIndex(prevIndex => (prevIndex + 1) % features.length);
-      }, 2000); 
+      }, 2000);
       return () => clearInterval(timer);
     }
-  }, [isMobile, features.length]); 
+  }, [displayMode, features.length]); // Updated dependencies
 
   if (!purifier || features.length === 0) {
     return (
@@ -43,18 +44,19 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
 
   return (
     <div className={`w-full mx-auto ${className}`}>
-      {isMobile && featureForAnimation ? ( 
-        <div className="h-[40px] flex items-center justify-center overflow-hidden px-2">
-             <AnimatedFeature
-                key={featureForAnimation.id} 
-                feature={featureForAnimation}
-              />
-        </div>
-      ) : isMobile ? ( 
-        <div className="h-[40px]" /> 
-      ) : (
-        // Desktop rendering: List of features
-        <div className="px-2"> 
+      {displayMode === 'animate' ? (
+        featureForAnimation ? (
+          <div className="h-[40px] flex items-center justify-center overflow-hidden px-2">
+            <AnimatedFeature
+              key={featureForAnimation.id}
+              feature={featureForAnimation}
+            />
+          </div>
+        ) : (
+          <div className="h-[40px]" /> // Fallback empty space for animate mode if no feature
+        )
+      ) : ( // displayMode === 'list'
+        <div className="px-2">
           <h4 className="text-md font-semibold text-foreground mb-2">Key Features</h4>
           <ul className="space-y-1.5">
             {features.map(feature => {

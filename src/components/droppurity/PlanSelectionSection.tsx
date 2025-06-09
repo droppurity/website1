@@ -96,11 +96,11 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
         {allImages.length > 1 && (
            <div className="mt-2">
             <div className="flex items-center justify-between">
-              <Button 
-                onClick={prevImage} 
-                variant="ghost" 
-                size="icon" 
-                className="text-muted-foreground hover:text-foreground disabled:opacity-30 p-1" 
+              <Button
+                onClick={prevImage}
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground disabled:opacity-30 p-1"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -114,8 +114,8 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
                       onClick={() => handleThumbnailClick(index)}
                       className={cn(
                         "w-14 h-14 sm:w-16 sm:h-16 rounded-md overflow-hidden border-2 transition-all shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-1",
-                        index === currentImageIndex 
-                          ? 'border-dynamic-accent ring-dynamic-accent' 
+                        index === currentImageIndex
+                          ? 'border-dynamic-accent ring-dynamic-accent'
                           : 'border-border hover:border-muted-foreground focus:ring-ring'
                       )}
                       aria-label={`View image ${index + 1} of ${purifier.name}`}
@@ -126,11 +126,11 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
                 </div>
               </div>
 
-              <Button 
-                onClick={nextImage} 
-                variant="ghost" 
-                size="icon" 
-                className="text-muted-foreground hover:text-foreground disabled:opacity-30 p-1" 
+              <Button
+                onClick={nextImage}
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground disabled:opacity-30 p-1"
                 aria-label="Next image"
               >
                 <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -160,20 +160,21 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
     const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
     if (basicPlan) return basicPlan.id;
-    
+
     const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
     if (recommendedPlan) return recommendedPlan.id;
-    
+
     return currentPurifierPlans[0]?.id || '';
   });
 
   useEffect(() => {
     const currentPurifierPlans = selectedPurifier.plans;
     if (!currentPurifierPlans || currentPurifierPlans.length === 0) {
-      setSelectedPlanId(''); 
+      setSelectedPlanId('');
       return;
     }
 
+    // Logic to select a default plan when purifier changes
     let newSelectedPlanId = '';
     const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
     if (basicPlan) {
@@ -182,12 +183,12 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
       const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
       if (recommendedPlan) {
         newSelectedPlanId = recommendedPlan.id;
-      } else {
-        newSelectedPlanId = currentPurifierPlans[0]?.id || '';
+      } else if (currentPurifierPlans.length > 0) {
+        newSelectedPlanId = currentPurifierPlans[0].id;
       }
     }
-    setSelectedPlanId(newSelectedPlanId); 
-  }, [selectedPurifier]); 
+    setSelectedPlanId(newSelectedPlanId);
+  }, [selectedPurifier]);
 
 
   const selectedPlan = useMemo(
@@ -233,10 +234,8 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
-          {/* KeyFeaturesDisplay for mobile is handled within KeyFeaturesDisplay component itself */}
-          {/* It shows animated pill on mobile and is now moved below image for desktop */}
-           <div className="lg:hidden"> {/* Only show animated features in header on mobile */}
-            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" />
+           <div className="lg:hidden"> {/* Only show animated features in header on mobile/tablet */}
+            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" displayMode="animate" />
           </div>
         </div>
 
@@ -244,7 +243,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
           <div className="lg:col-span-2">
             <PurifierImageDisplay purifier={selectedPurifier} />
             <div className="hidden lg:block"> {/* Only show list features below image on desktop */}
-                 <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-4 lg:mt-6" />
+                 <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-4 lg:mt-6" displayMode="list" />
             </div>
           </div>
 
@@ -260,14 +259,14 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground">Step 1: Choose Your Plan</h3>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                        className={cn(
                         "text-xs border-dynamic-accent",
-                        "text-dynamic-accent bg-transparent", 
-                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", 
-                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" 
+                        "text-dynamic-accent bg-transparent",
+                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent",
+                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent"
                       )}
                     >
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
