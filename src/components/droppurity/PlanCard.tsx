@@ -11,20 +11,27 @@ import { useToast } from "@/hooks/use-toast";
 interface PlanCardProps {
   plan: Plan;
   tenure: TenureOption;
-  displayPurifierName?: string; 
+  purifierContextName?: string; // e.g., "Droppurity RO+"
 }
 
-export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCardProps) {
+export default function PlanCard({ plan, tenure, purifierContextName }: PlanCardProps) {
   const { toast } = useToast();
 
   const priceDetail: PlanPriceDetail | undefined = plan.tenurePricing[tenure.id];
+
+  const fullPlanNameForMessages = purifierContextName ? `${purifierContextName} - ${plan.name}` : plan.name;
 
   if (!priceDetail) {
     return (
       <Card className="flex flex-col shadow-lg rounded-xl overflow-hidden border border-destructive">
         <CardHeader className="p-4 sm:p-6 bg-card">
+          {purifierContextName && (
+            <p className="text-xs text-muted-foreground text-center font-medium uppercase tracking-wider -mb-1">
+              {purifierContextName}
+            </p>
+          )}
           <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-destructive-foreground">
-            {displayPurifierName || plan.name}
+            {plan.name} Plan
           </CardTitle>
         </CardHeader>
         <CardContent className="p-4 sm:p-6 flex-grow">
@@ -50,30 +57,35 @@ export default function PlanCard({ plan, tenure, displayPurifierName }: PlanCard
   const handleSubscribe = () => {
     toast({
       title: "Subscribed!",
-      description: `You've chosen the ${displayPurifierName || plan.name} for ${tenure.displayName}.`,
+      description: `You've chosen the ${fullPlanNameForMessages} plan for ${tenure.displayName}.`,
     });
   };
 
   const handleKnowMore = () => {
      toast({
       title: "More Information",
-      description: `Details for ${displayPurifierName || plan.name}. This could navigate to a detailed page or open a modal.`,
+      description: `Details for ${fullPlanNameForMessages}. This could navigate to a detailed page or open a modal.`,
       action: <Button variant="outline" size="sm">Learn Even More</Button>,
     });
   }
 
   return (
-    <div className={`flex flex-col rounded-xl overflow-hidden ${plan.recommended && !displayPurifierName ? 'border-dynamic-accent border-2 relative' : ''}`}>
-      {plan.recommended && plan.pillText && !displayPurifierName && ( 
+    <div className={`flex flex-col rounded-xl overflow-hidden ${plan.recommended && !purifierContextName ? 'border-dynamic-accent border-2 relative' : ''}`}>
+      {plan.recommended && plan.pillText && !purifierContextName && ( 
         <Badge variant="default" className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dynamic-accent text-dynamic-accent-foreground px-3 py-1 text-xs z-10">
           {plan.pillText}
         </Badge>
       )}
       <CardHeader className="p-4 sm:p-6 bg-card">
+        {purifierContextName && (
+            <p className="text-xs text-muted-foreground text-center font-medium uppercase tracking-wider -mb-1">
+              {purifierContextName}
+            </p>
+          )}
         <CardTitle className="font-headline text-lg sm:text-xl text-center font-semibold text-foreground">
-          {displayPurifierName || plan.name}
+          {plan.name} Plan
         </CardTitle>
-        <p className="text-xs text-muted-foreground text-center">{plan.limits.replace("Upto ", "")}</p> {/* Removed "Upto" here as well for consistency */}
+        <p className="text-xs text-muted-foreground text-center">{plan.limits.replace("Upto ", "")}</p>
         <div className="text-center mt-2">
           <span className="text-3xl sm:text-4xl font-bold font-headline text-dynamic-accent">
             ₹{Math.round(displayPricePerMonth)}

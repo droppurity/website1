@@ -147,7 +147,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
     if (selectedPlanId !== newSelectedPlanId) {
       setSelectedPlanId(newSelectedPlanId);
     }
-  }, [selectedPurifier]);
+  }, [selectedPurifier, selectedPlanId]); // Added selectedPlanId to dependencies
 
 
   const selectedPlan = useMemo(
@@ -165,14 +165,6 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
     if (selectedPurifier.accentColor === 'teal') return 'theme-teal';
     return 'theme-blue';
   }, [selectedPurifier.accentColor]);
-
-  const displayPurifierPlanName = useMemo(() => {
-    if (selectedPurifier && selectedPlan) {
-      return `${selectedPurifier.name} - ${selectedPlan.name}`;
-    }
-    return selectedPurifier?.name || "";
-  }, [selectedPurifier, selectedPlan]);
-
 
   const stickyCardTopClass = 'top-[7rem]';
 
@@ -226,9 +218,9 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                       size="sm" 
                       className={cn(
                         "text-xs",
-                        "text-dynamic-accent border-dynamic-accent",
-                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent",
-                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent"
+                        "text-dynamic-accent border-dynamic-accent", // Normal state
+                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", // Hover state
+                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" // Focus state
                       )}
                     >
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
@@ -259,7 +251,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                   <PlanCard
                     plan={selectedPlan}
                     tenure={selectedTenure}
-                    displayPurifierName={displayPurifierPlanName}
+                    purifierContextName={selectedPurifier.name}
                   />
                 ) : (
                   <div className="text-center text-muted-foreground py-8">
