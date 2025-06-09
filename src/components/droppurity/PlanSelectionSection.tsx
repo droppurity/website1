@@ -221,7 +221,12 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="text-xs text-foreground border-dynamic-accent hover:bg-muted hover:text-foreground"
+                      className={cn(
+                        "text-xs",
+                        "text-dynamic-accent border-dynamic-accent", // Normal state
+                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", // Hover state
+                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" // Focus state
+                      )}
                     >
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
                     </Button>
