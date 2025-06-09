@@ -113,38 +113,41 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>(() => {
     const initialPurifier = purifiers.find(p => p.id === defaultPurifierId) || purifiers[0];
-    const recommendedPlan = initialPurifier.plans.find(p => p.recommended);
-    if (recommendedPlan) return recommendedPlan.id;
-    const basicPlan = initialPurifier.plans.find(p => p.name.toLowerCase() === 'basic');
+    const currentPurifierPlans = initialPurifier.plans;
+
+    const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
     if (basicPlan) return basicPlan.id;
-    return initialPurifier.plans[0]?.id || '';
+    
+    const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
+    if (recommendedPlan) return recommendedPlan.id;
+    
+    return currentPurifierPlans[0]?.id || '';
   });
 
   useEffect(() => {
     const currentPurifierPlans = selectedPurifier.plans;
-    let defaultPlanIdToSet = '';
+    if (!currentPurifierPlans || currentPurifierPlans.length === 0) {
+      setSelectedPlanId('');
+      return;
+    }
 
-    const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
-    if (recommendedPlan) {
-        defaultPlanIdToSet = recommendedPlan.id;
+    let newSelectedPlanId = '';
+    const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
+    if (basicPlan) {
+      newSelectedPlanId = basicPlan.id;
     } else {
-        const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
-        if (basicPlan) {
-            defaultPlanIdToSet = basicPlan.id;
-        } else if (currentPurifierPlans.length > 0) {
-            defaultPlanIdToSet = currentPurifierPlans[0].id;
-        }
+      const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
+      if (recommendedPlan) {
+        newSelectedPlanId = recommendedPlan.id;
+      } else {
+        newSelectedPlanId = currentPurifierPlans[0]?.id || '';
+      }
     }
-
-    if (defaultPlanIdToSet && defaultPlanIdToSet !== selectedPlanId) {
-        const currentSelectedPlanIsValidForNewPurifier = currentPurifierPlans.some(p => p.id === selectedPlanId);
-        if (!currentSelectedPlanIsValidForNewPurifier) {
-            setSelectedPlanId(defaultPlanIdToSet);
-        }
-    } else if (currentPurifierPlans.length > 0 && !currentPurifierPlans.some(p => p.id === selectedPlanId)) {
-        setSelectedPlanId(currentPurifierPlans[0].id);
+    
+    if (selectedPlanId !== newSelectedPlanId) {
+      setSelectedPlanId(newSelectedPlanId);
     }
-  }, [selectedPurifierId, selectedPurifier.plans, selectedPlanId]);
+  }, [selectedPurifier]);
 
 
   const selectedPlan = useMemo(
@@ -223,9 +226,9 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                       size="sm" 
                       className={cn(
                         "text-xs",
-                        "text-dynamic-accent border-dynamic-accent", // Normal state
-                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", // Hover state
-                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" // Focus state
+                        "text-dynamic-accent border-dynamic-accent",
+                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent",
+                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent"
                       )}
                     >
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
