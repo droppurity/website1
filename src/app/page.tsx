@@ -31,10 +31,10 @@ const features = [
 ];
 
 export default function HomePage() {
-  // Removed isHeaderVisible and lastScrollY state for auto-hiding header effect, as header is now always visible.
-  // The pt-14 class on the root div accounts for the fixed header height.
+  // The PlanSelectionSection will be sticky relative to the auto-hiding header.
+  // No specific top padding needed on the root div here due to how sticky positioning works.
   return (
-    <div className="flex flex-col pt-14"> {/* Consistent padding for fixed header */}
+    <div className="flex flex-col"> {/* Removed pt-14 */}
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 bg-gradient-to-br from-primary/20 via-background to-background">
         <div className="absolute inset-0 opacity-30">
@@ -109,6 +109,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Pass headerVisible={true} to indicate the main header is part of the layout for this page */}
       <PlanSelectionSection headerVisible={true} />
 
       {/* Call to Action Section */}

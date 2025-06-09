@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Droplet, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
-import { useState, useEffect } from 'react'; // Keep useEffect for isClient if needed for other things, but not scroll
+import { useState, useEffect, useRef } from 'react';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -16,16 +16,29 @@ const navItems = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    setIsClient(true);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 56) { // 56px is header height
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Removed scroll-based auto-hiding logic. Header is now always visible when rendered.
   return (
     <header
-      className="bg-card shadow-sm sticky top-0 z-50" // Always sticky, no transform
+      className={`bg-card shadow-sm sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
+        isHeaderVisible ? 'transform-none' : '-translate-y-full'
+      }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
