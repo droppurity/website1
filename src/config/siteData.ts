@@ -12,7 +12,8 @@ export const tenureOptions: TenureOption[] = [
 const commonFeaturesList: Feature[] = [
   { id: 'multi-stage', name: 'Multistage Universal Water purifier', icon: Check },
   { id: 'ro-purification', name: 'RO Purification', icon: Check },
-  { id: 'inline-uv', name: 'In-line UV purification', icon: Check },
+  { id: 'in-tank-uv', name: 'In-Tank UV purification', icon: Check }, // Changed from In-line UV, id updated
+  { id: 'inline-uf', name: 'Inline UF purification', icon: Check }, // Added Inline UF
 ];
 
 const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness of copper', icon: Atom };

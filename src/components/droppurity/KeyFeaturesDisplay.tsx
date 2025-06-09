@@ -33,7 +33,7 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   const features = purifier?.keyFeatures || [];
-  const accentIsPrimary = !purifier || purifier.accentColor === 'blue'; // Corrected this line
+  const accentIsPrimary = !purifier || purifier.accentColor === 'blue';
 
   // Reset currentFeatureIndex to 0 when the features array changes
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
         // The modulo operator will ensure the index wraps around correctly
         // and stays within bounds for the current features.length.
         setCurrentFeatureIndex(prevIndex => (prevIndex + 1) % features.length);
-      }, 3000);
+      }, 2000); // Changed from 3000ms to 2000ms
       return () => clearInterval(timer);
     }
   }, [isMobile, features.length]); // Rely on features.length for this effect
