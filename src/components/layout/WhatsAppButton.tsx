@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 
 export default function WhatsAppButton() {
   // Replace with your actual WhatsApp number including country code without '+' or '00'
-  const phoneNumber = "12345678900"; // Example: Indian number 91XXXXXXXXXX
+  const phoneNumber = "917979784097"; // Updated with your number + country code for India
   const whatsappLink = `https://wa.me/${phoneNumber}`;
 
   return (
