@@ -26,7 +26,7 @@ export default function PlanCard({ plan, tenure, purifierContextName }: PlanCard
       <Card className="flex flex-col shadow-lg rounded-xl overflow-hidden border border-destructive">
         <CardHeader className="p-4 sm:p-6 bg-card">
           {purifierContextName && (
-            <p className="text-xs text-muted-foreground text-center font-medium uppercase tracking-wider -mb-1">
+            <p className="text-xs text-dynamic-accent text-center font-medium uppercase tracking-wider -mb-1">
               {purifierContextName}
             </p>
           )}
@@ -78,7 +78,7 @@ export default function PlanCard({ plan, tenure, purifierContextName }: PlanCard
       )}
       <CardHeader className="p-4 sm:p-6 bg-card">
         {purifierContextName && (
-            <p className="text-xs text-muted-foreground text-center font-medium uppercase tracking-wider -mb-1">
+            <p className="text-xs text-dynamic-accent text-center font-medium uppercase tracking-wider -mb-1">
               {purifierContextName}
             </p>
           )}
