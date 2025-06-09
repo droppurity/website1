@@ -54,7 +54,7 @@ const roPlusPricing: { [planName in 'Basic' | 'Value' | 'Commercial']: { [tenure
   Commercial: { 
     '28d': { pricePerMonth: 749 },
     '7m': { pricePerMonth: 599 },
-    '12m': { pricePerMonth: 549, payingMonths: 10, additionalFeatures: ["+2 months free"] },
+    '12m': { pricePerMonth: 549, payingMonths: 11, additionalFeatures: ["+1 month free"] }, // Changed payingMonths to 11 and additionalFeatures to "+1 month free"
   },
 };
 
