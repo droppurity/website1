@@ -2,7 +2,8 @@
 "use client";
 
 import Link from 'next/link';
-import { Droplet, Menu } from 'lucide-react';
+import Image from 'next/image';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { useState, useEffect, useRef } from 'react';
@@ -42,9 +43,8 @@ export default function Header() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          <Link href="/" className="flex items-center gap-2">
-            <Droplet className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
-            <span className="text-lg sm:text-xl font-bold text-foreground">Droppurity</span>
+          <Link href="/" className="flex items-center">
+            <Image src="/logo.png" alt="Droppurity Logo" width={134} height={36} className="object-contain" priority />
           </Link>
 
           {/* Desktop Navigation */}
@@ -71,9 +71,8 @@ export default function Header() {
                 <div className="flex flex-col h-full">
                   <div className="flex items-center p-4 border-b">
                     <SheetTitle asChild>
-                      <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                        <Droplet className="w-7 h-7 text-primary" />
-                        <span className="text-lg font-bold text-foreground">Droppurity</span>
+                      <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
+                         <Image src="/logo.png" alt="Droppurity Logo" width={134} height={36} className="object-contain" />
                       </Link>
                     </SheetTitle>
                   </div>

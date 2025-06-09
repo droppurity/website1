@@ -1,6 +1,7 @@
 
 import Link from 'next/link';
-import { Droplet, Twitter, Linkedin, Facebook, Instagram, Youtube, MessageCircle, ArrowUpCircle } from 'lucide-react';
+import Image from 'next/image';
+import { Twitter, Linkedin, Facebook, Instagram, Youtube, MessageCircle, ArrowUpCircle } from 'lucide-react';
 
 const footerSections = [
   {
@@ -54,9 +55,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Column 1: Logo and Address */}
           <div className="md:col-span-2 lg:col-span-1 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <Droplet className="w-10 h-10" />
-              <span className="text-2xl font-bold">Droppurity</span>
+            <Link href="/" className="flex items-center">
+              <Image src="/logo.png" alt="Droppurity Logo" width={178} height={48} className="object-contain" />
             </Link>
             <p className="text-sm opacity-90">
               Smart Purifiers on Rent. Free Maintenance for Life.
