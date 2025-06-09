@@ -168,13 +168,14 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   });
 
   useEffect(() => {
+    // This effect should ONLY run when the selectedPurifier changes,
+    // to set a default plan for the newly selected purifier.
     const currentPurifierPlans = selectedPurifier.plans;
     if (!currentPurifierPlans || currentPurifierPlans.length === 0) {
       setSelectedPlanId('');
       return;
     }
 
-    // Logic to select a default plan when purifier changes
     let newSelectedPlanId = '';
     const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
     if (basicPlan) {
@@ -188,7 +189,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
       }
     }
     setSelectedPlanId(newSelectedPlanId);
-  }, [selectedPurifier]);
+  }, [selectedPurifier]); // Only depends on selectedPurifier
 
 
   const selectedPlan = useMemo(
@@ -225,7 +226,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 
         <div className={cn(
-            "sticky bg-background py-2 shadow-lg mb-6 sm:mb-10 z-40",
+            "sticky bg-background py-1 shadow-lg mb-6 sm:mb-10 z-40",
             isHeaderDominant && "z-[51]"
           )}
           style={{ top: '0' }}>
@@ -235,7 +236,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
             onSelectPurifier={setSelectedPurifierId}
           />
            <div className="lg:hidden"> {/* Only show animated features in header on mobile/tablet */}
-            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" displayMode="animate" />
+            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-1" displayMode="animate" />
           </div>
         </div>
 
@@ -325,3 +326,4 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 PlanSelectionSection.displayName = 'PlanSelectionSection';
 export default PlanSelectionSection;
+

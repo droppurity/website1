@@ -16,7 +16,7 @@ export default function PurifierSelector({
   onSelectPurifier,
 }: PurifierSelectorProps) {
   return (
-    <div className="w-full flex items-start gap-3 sm:gap-4 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar py-3">
+    <div className="w-full flex items-start gap-2 sm:gap-3 overflow-x-auto md:flex-wrap md:justify-center no-scrollbar py-2">
       {purifiers.map((purifier) => {
         const isSelected = purifier.id === selectedPurifierId;
         const TaglineIcon = purifier.taglineIcon;
@@ -70,3 +70,4 @@ export default function PurifierSelector({
     </div>
   );
 }
+
