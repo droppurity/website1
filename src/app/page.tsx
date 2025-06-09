@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Shield, Sparkles } from 'lucide-react';
 import PlanSelectionSection from '@/components/droppurity/PlanSelectionSection';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react'; // Added useRef
 
 const features = [
   {
@@ -31,10 +31,8 @@ const features = [
 ];
 
 export default function HomePage() {
-  // The PlanSelectionSection will be sticky relative to the auto-hiding header.
-  // No specific top padding needed on the root div here due to how sticky positioning works.
   return (
-    <div className="flex flex-col"> {/* Removed pt-14 */}
+    <div className="flex flex-col pt-14"> {/* Added pt-14 */}
       {/* Hero Section */}
       <section className="relative py-20 sm:py-32 bg-gradient-to-br from-primary/20 via-background to-background">
         <div className="absolute inset-0 opacity-30">
@@ -109,8 +107,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pass headerVisible={true} to indicate the main header is part of the layout for this page */}
-      <PlanSelectionSection headerVisible={true} />
+      <PlanSelectionSection /> {/* Removed headerVisible prop */}
 
       {/* Call to Action Section */}
       <section className="py-16 sm:py-24 bg-background">

@@ -16,9 +16,8 @@ import { Button } from '@/components/ui/button';
 import { Droplet, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface PlanSelectionSectionProps {
-  headerVisible?: boolean;
-}
+// Removed headerVisible from props
+interface PlanSelectionSectionProps {}
 
 function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   const allImages = useMemo(() => (purifier.thumbnailImages && purifier.thumbnailImages.length > 0
@@ -44,10 +43,9 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
   };
   
   const mainDisplayImage = allImages[currentImageIndex] || purifier.image;
-  // Determine the theme class based on the selected purifier for the image display context
   const imageDisplayThemeClass = purifier.accentColor === 'copper' ? 'theme-copper'
                              : purifier.accentColor === 'teal' ? 'theme-teal'
-                             : '';
+                             : 'theme-blue'; // Explicitly set to theme-blue for default
 
 
   return (
@@ -100,7 +98,7 @@ function PurifierImageDisplay({ purifier }: { purifier: PurifierType }) {
 }
 
 
-export default function PlanSelectionSection({ headerVisible = true }: PlanSelectionSectionProps) {
+export default function PlanSelectionSection({}: PlanSelectionSectionProps) { // Removed headerVisible from destructuring
   const [selectedPurifierId, setSelectedPurifierId] = useState<string>(defaultPurifierId);
   const [selectedTenureId, setSelectedTenureId] = useState<string>(defaultTenureId);
   
@@ -134,11 +132,10 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     [selectedTenureId]
   );
 
-  // Theme class for components that should reflect the overall selected purifier's theme
   const overallThemeClass = useMemo(() => {
     if (selectedPurifier.accentColor === 'copper') return 'theme-copper';
     if (selectedPurifier.accentColor === 'teal') return 'theme-teal';
-    return ''; 
+    return 'theme-blue'; 
   }, [selectedPurifier.accentColor]);
 
   const displayPurifierPlanName = useMemo(() => {
@@ -148,11 +145,29 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     return selectedPurifier?.name || ""; 
   }, [selectedPurifier, selectedPlan]);
 
- const stickyCardTopClass = 'top-[7rem]'; // Adjust sticky card top if needed based on header height
+  // Set stickyCardTopClass to a fixed value as the purifier bar will always be top:0 when sticky
+  const stickyCardTopClass = 'top-[7rem]'; 
+
+
+  useEffect(() => {
+    // Apply theme class to body for consistent dynamic accent colors across the page
+    // Remove previous theme classes
+    document.body.classList.remove('theme-blue', 'theme-teal', 'theme-copper');
+    // Add current theme class
+    if (overallThemeClass) {
+      document.body.classList.add(overallThemeClass);
+    }
+    // Cleanup on component unmount
+    return () => {
+      if (overallThemeClass) {
+        document.body.classList.remove(overallThemeClass);
+      }
+    };
+  }, [overallThemeClass]);
 
 
   return (
-    <div className={`py-6 sm:py-10 bg-background ${overallThemeClass}`}> {/* Apply overall theme here for children like PlanCard */}
+    <div className={`py-6 sm:py-10 bg-background ${overallThemeClass}`}>
       <div className="container mx-auto px-4">
         <header className="text-center mb-6 sm:mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold font-headline text-foreground flex items-center justify-center">
@@ -164,18 +179,18 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
             </p>
         </header>
 
-        <div className={`sticky bg-background z-40 py-2 shadow-lg mb-6 sm:mb-10`} style={{ top: headerVisible ? '56px' : '0' }}>
+        {/* Sticky bar now always uses top: '0' */}
+        <div className={`sticky bg-background z-40 py-2 shadow-lg mb-6 sm:mb-10`} style={{ top: '0' }}>
           <PurifierSelector
             purifiers={purifiers}
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
-          <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" /> {/* KeyFeaturesDisplay will use the overall theme */}
+          <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
-             {/* Pass selectedPurifier here, it will apply its own theme for border/ring internally */}
             <PurifierImageDisplay purifier={selectedPurifier} />
           </div>
 
@@ -245,3 +260,4 @@ export default function PlanSelectionSection({ headerVisible = true }: PlanSelec
     </div>
   );
 }
+
