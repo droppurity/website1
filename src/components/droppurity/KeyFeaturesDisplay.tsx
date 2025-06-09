@@ -13,15 +13,12 @@ interface KeyFeaturesDisplayProps {
   className?: string; // Allow passing additional classes
 }
 
-function FeaturePill({ feature, accentIsPrimary }: { feature: Feature, accentIsPrimary: boolean }) {
+function FeaturePill({ feature }: { feature: Feature }) {
   const IconComponent = feature.icon || Check;
-  const iconColorClass = 'text-green-500';
-  const pillBgClass = 'bg-green-50';
-  const pillTextColorClass = 'text-green-700';
-
+  
   return (
-    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${pillBgClass} ${pillTextColorClass} shadow-sm`}>
-      <IconComponent className={`w-3.5 h-3.5 ${iconColorClass}`} />
+    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-light-dynamic-accent text-dynamic-accent shadow-sm`}>
+      <IconComponent className={`w-3.5 h-3.5 text-dynamic-accent`} />
       <span>{feature.name}</span>
     </div>
   );
@@ -33,7 +30,6 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   const features = purifier?.keyFeatures || [];
-  const accentIsPrimary = !purifier || purifier.accentColor === 'blue';
 
   // Reset currentFeatureIndex to 0 when the features array changes
   useEffect(() => {
@@ -43,13 +39,11 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
   useEffect(() => {
     if (isMobile && features.length > 0) {
       const timer = setInterval(() => {
-        // The modulo operator will ensure the index wraps around correctly
-        // and stays within bounds for the current features.length.
         setCurrentFeatureIndex(prevIndex => (prevIndex + 1) % features.length);
-      }, 2000); // Changed from 3000ms to 2000ms
+      }, 2000); 
       return () => clearInterval(timer);
     }
-  }, [isMobile, features.length]); // Rely on features.length for this effect
+  }, [isMobile, features.length]); 
 
   if (!purifier || features.length === 0) {
     return (
@@ -59,26 +53,23 @@ export default function KeyFeaturesDisplay({ purifier, className }: KeyFeaturesD
     );
   }
 
-  // At this point, features.length > 0 is guaranteed.
-  // And currentFeatureIndex should be 0 if features just changed, or a valid cycling index.
   const featureForAnimation = features[currentFeatureIndex];
 
   return (
     <div className={`w-full mx-auto mt-2 ${className}`}>
-      {isMobile && featureForAnimation ? ( // Check featureForAnimation to ensure it's defined
+      {isMobile && featureForAnimation ? ( 
         <div className="h-[40px] flex items-center justify-center overflow-hidden px-2">
              <AnimatedFeature
-                key={featureForAnimation.id} // Accessing .id is now safer
+                key={featureForAnimation.id} 
                 feature={featureForAnimation}
-                accentIsPrimary={accentIsPrimary}
               />
         </div>
-      ) : isMobile ? ( // Handle case where featureForAnimation might be undefined (should be rare with reset)
-        <div className="h-[40px]" /> // Empty div to maintain layout space
+      ) : isMobile ? ( 
+        <div className="h-[40px]" /> 
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-2">
           {features.map(feature => (
-            <FeaturePill key={feature.id} feature={feature} accentIsPrimary={accentIsPrimary} />
+            <FeaturePill key={feature.id} feature={feature} />
           ))}
         </div>
       )}
