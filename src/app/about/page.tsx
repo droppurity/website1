@@ -21,7 +21,7 @@ export default function AboutPage() {
             <div className="md:flex">
               <div className="md:w-1/2">
                 <Image
-                  src="https://placehold.co/800x600.png"
+                  src="https://placehold.co/800x800.png"
                   alt="Team working on water solutions"
                   width={800}
                   height={600}
@@ -92,7 +92,7 @@ export default function AboutPage() {
                 {[1,2,3,4].map(i => (
                     <Card key={i} className="shadow-md">
                         <CardContent className="pt-6">
-                            <Image src={`https://placehold.co/200x200.png`} alt={`Team member ${i}`} width={150} height={150} className="rounded-full mx-auto mb-4" data-ai-hint="person portrait" />
+                            <Image src={`https://placehold.co/800x800.png`} alt={`Team member ${i}`} width={150} height={150} className="rounded-full mx-auto mb-4" data-ai-hint="person portrait" />
                             <h3 className="font-semibold text-foreground">Team Member {i}</h3>
                             <p className="text-sm text-primary">Role / Title</p>
                         </CardContent>

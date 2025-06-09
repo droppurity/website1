@@ -58,7 +58,7 @@ export default function HomePage() {
       <section className="relative py-20 sm:py-32 bg-gradient-to-br from-primary/20 via-background to-background">
         <div className="absolute inset-0 opacity-30">
           <Image
-            src="https://placehold.co/1920x1080.png"
+            src="https://placehold.co/800x800.png"
             alt="Abstract water background"
             layout="fill"
             objectFit="cover"
