@@ -44,7 +44,7 @@
     /* Dynamic accent colors */
     --dynamic-accent-hsl-values: 210 90% 55%; /* Default to primary blue HSL values */
     --dynamic-accent-foreground-hsl-values: 0 0% 100%;
-    --light-dynamic-accent-bg-hsl-values: 210 85% 93%; /* Default light blue for unselected bg - Adjusted for more distinct blue */
+    --light-dynamic-accent-bg-hsl-values: 210 90% 88%; /* Default light blue for unselected bg - Adjusted for more distinct blue */
 
 
     /* Gradient variables for dynamic accent */
@@ -89,7 +89,7 @@
 
     --dynamic-accent-hsl-values: 210 90% 60%;
     --dynamic-accent-foreground-hsl-values: 220 30% 5%;
-    --light-dynamic-accent-bg-hsl-values: 210 75% 18%; /* Darker light blue for dark mode - Adjusted for more distinct blue */
+    --light-dynamic-accent-bg-hsl-values: 210 80% 22%; /* Darker light blue for dark mode - Adjusted for more distinct blue */
 
 
     /* Gradient variables for dynamic accent in dark mode */
