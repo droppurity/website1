@@ -12,8 +12,8 @@ export const tenureOptions: TenureOption[] = [
 const commonFeaturesList: Feature[] = [
   { id: 'multi-stage', name: 'Multistage Universal Water purifier', icon: Check },
   { id: 'ro-purification', name: 'RO Purification', icon: Check },
-  { id: 'in-tank-uv', name: 'In-Tank UV purification', icon: Check }, // Changed from In-line UV, id updated
-  { id: 'inline-uf', name: 'Inline UF purification', icon: Check }, // Added Inline UF
+  { id: 'in-tank-uv', name: 'In-Tank UV purification', icon: Check },
+  { id: 'inline-uf', name: 'Inline UF purification', icon: Check },
 ];
 
 const copperSpecificFeature: Feature = { id: 'copper-goodness', name: 'Goodness of copper', icon: Atom };
@@ -96,7 +96,7 @@ export const purifiers: Purifier[] = [
         'https://placehold.co/100x100.png',
         'https://placehold.co/100x100.png',
     ],
-    storageCapacity: '8 Litre Storage',
+    storageCapacity: '10 Litre Storage', // Updated from 8 Litre
     keyFeatures: commonFeaturesList, // These are technical features, not plan benefits
     accentColor: 'blue',
     dataAiHint: 'ro water purifier',
@@ -148,3 +148,4 @@ const getDefaultPlanForDefaultPurifier = () => {
 };
 
 export const defaultPlanId = getDefaultPlanForDefaultPurifier();
+
