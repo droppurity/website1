@@ -170,31 +170,24 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
   useEffect(() => {
     const currentPurifierPlans = selectedPurifier.plans;
     if (!currentPurifierPlans || currentPurifierPlans.length === 0) {
-      setSelectedPlanId(''); // Handle case of no plans for the purifier
+      setSelectedPlanId(''); 
       return;
     }
 
     let newSelectedPlanId = '';
-    // Try to find 'Basic' plan
     const basicPlan = currentPurifierPlans.find(p => p.name.toLowerCase() === 'basic');
     if (basicPlan) {
       newSelectedPlanId = basicPlan.id;
     } else {
-      // If 'Basic' not found, try to find a 'recommended' plan
       const recommendedPlan = currentPurifierPlans.find(p => p.recommended);
       if (recommendedPlan) {
         newSelectedPlanId = recommendedPlan.id;
       } else {
-        // If no 'Basic' or 'recommended', take the first available plan
         newSelectedPlanId = currentPurifierPlans[0]?.id || '';
       }
     }
-    
-    // Set the selected plan ID. This will run whenever selectedPurifier changes.
-    // It ensures that the plan selection is appropriate for the new purifier.
     setSelectedPlanId(newSelectedPlanId); 
-
-  }, [selectedPurifier]); // Only depends on selectedPurifier
+  }, [selectedPurifier]); 
 
 
   const selectedPlan = useMemo(
@@ -240,12 +233,19 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
             selectedPurifierId={selectedPurifierId}
             onSelectPurifier={setSelectedPurifierId}
           />
-          <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" />
+          {/* KeyFeaturesDisplay for mobile is handled within KeyFeaturesDisplay component itself */}
+          {/* It shows animated pill on mobile and is now moved below image for desktop */}
+           <div className="lg:hidden"> {/* Only show animated features in header on mobile */}
+            <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-2" />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
             <PurifierImageDisplay purifier={selectedPurifier} />
+            <div className="hidden lg:block"> {/* Only show list features below image on desktop */}
+                 <KeyFeaturesDisplay purifier={selectedPurifier} className="mt-4 lg:mt-6" />
+            </div>
           </div>
 
           <div className="lg:col-span-3">
@@ -265,9 +265,9 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                       size="sm" 
                        className={cn(
                         "text-xs border-dynamic-accent",
-                        "text-dynamic-accent bg-transparent", // Normal state text and border
-                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", // Hover state
-                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" // Focus state
+                        "text-dynamic-accent bg-transparent", 
+                        "hover:bg-gradient-to-br hover:from-gradient-start hover:to-gradient-end hover:text-dynamic-accent-foreground hover:border-transparent", 
+                        "focus-visible:bg-gradient-to-br focus-visible:from-gradient-start focus-visible:to-gradient-end focus-visible:text-dynamic-accent-foreground focus-visible:border-transparent" 
                       )}
                     >
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
@@ -326,4 +326,3 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 PlanSelectionSection.displayName = 'PlanSelectionSection';
 export default PlanSelectionSection;
-
