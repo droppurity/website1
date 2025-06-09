@@ -19,17 +19,17 @@ const footerSections = [
     title: 'Explore',
     links: [
       { label: 'About', href: '/about' },
-      { label: 'Careers', href: '#' }, 
-      { label: 'Blog', href: '#' }, 
-      { label: 'FAQs', href: '#' }, 
+      { label: 'Careers', href: '#' },
+      { label: 'Blog', href: '#' },
+      { label: 'FAQs', href: '#' },
       { label: 'Contact', href: '/contact' },
     ],
   },
   {
     title: 'Terms',
     links: [
-      { label: 'Privacy Policy', href: '#' }, 
-      { label: 'Terms of Use', href: '#' }, 
+      { label: 'Privacy Policy', href: '#' },
+      { label: 'Terms of Use', href: '#' },
     ],
   },
 ];
@@ -39,7 +39,7 @@ const socialLinks = [
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
   { icon: Facebook, href: '#', label: 'Facebook' },
   { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: MessageCircle, href: '#', label: 'WhatsApp' }, 
+  { icon: MessageCircle, href: '#', label: 'WhatsApp' },
   { icon: Youtube, href: '#', label: 'YouTube' },
 ];
 
@@ -62,10 +62,20 @@ export default function Footer() {
             <p className="text-sm text-primary-foreground/80">
               Smart Purifiers on Rent. Free Maintenance for Life.
             </p>
-            <p className="text-sm text-primary-foreground/80">
-              Plot No. 21, Adarsh Nagar, Opp. Shivaji Chowk, Khadgaon Road,<br />
-              WADI, NAGPUR - 440 023. (MH.)
-            </p>
+            <div>
+              <p className="text-sm text-primary-foreground/80">
+                <strong>Main Branch:</strong><br />
+                Plot No. 21, Adarsh Nagar,<br />
+                Opp. Shivaji Chowk, Khadgaon Road,<br />
+                WADI, NAGPUR - 440 023. (MH.)
+              </p>
+              <p className="text-sm text-primary-foreground/80 mt-2">
+                <strong>Corporate Office:</strong><br />
+                B-503, Shivalik Enclave, Obaria Road,<br />
+                Hatia, Near Nandan Palace,<br />
+                Ranchi - 834003
+              </p>
+            </div>
           </div>
 
           {/* Columns 2, 3: Link Sections */}
