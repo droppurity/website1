@@ -33,6 +33,7 @@ export interface TenureOption {
   durationMonths: number; // For easier calculation of total costs/savings over the period
   displayName: string;
   lockInNote?: string;
+  offerPillText?: string; // Text for a small offer badge on the tenure button
 }
 
 export interface Purifier {

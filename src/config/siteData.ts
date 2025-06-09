@@ -6,7 +6,7 @@ import { Sparkles, Star, Check, Atom } from 'lucide-react';
 export const tenureOptions: TenureOption[] = [
   { id: '28d', durationDays: 28, durationMonths: 1, displayName: '28 days', lockInNote: '12 Month Lock-in' },
   { id: '7m', durationDays: 210, durationMonths: 7, displayName: '7 Months', lockInNote: '12 Month Lock-in' },
-  { id: '12m', durationDays: 360, durationMonths: 12, displayName: '12 Months', lockInNote: '12 Month Lock-in' },
+  { id: '12m', durationDays: 360, durationMonths: 12, displayName: '12 Months', lockInNote: '12 Month Lock-in', offerPillText: '+1 month free' },
 ];
 
 const commonFeaturesList: Feature[] = [
@@ -151,4 +151,3 @@ const getDefaultPlanForDefaultPurifier = () => {
 };
 
 export const defaultPlanId = getDefaultPlanForDefaultPurifier();
-
