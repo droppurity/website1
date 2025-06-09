@@ -136,22 +136,14 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
         }
     }
 
-    // Only set if a valid plan ID was found, and it's different from the current
     if (defaultPlanIdToSet && defaultPlanIdToSet !== selectedPlanId) {
-        // Check if the current selectedPlanId is even valid for the new purifier
         const currentSelectedPlanIsValidForNewPurifier = currentPurifierPlans.some(p => p.id === selectedPlanId);
         if (!currentSelectedPlanIsValidForNewPurifier) {
             setSelectedPlanId(defaultPlanIdToSet);
         }
-        // If current selected plan is valid, user might have explicitly chosen it, so don't override.
-        // The above logic might need refinement if we want to *always* switch to recommended/basic on purifier change.
-        // For now, it only changes if the current selection becomes invalid.
     } else if (currentPurifierPlans.length > 0 && !currentPurifierPlans.some(p => p.id === selectedPlanId)) {
-        // Fallback if current selectedPlanId is not in the new purifier's plans
         setSelectedPlanId(currentPurifierPlans[0].id);
     }
-
-
   }, [selectedPurifierId, selectedPurifier.plans, selectedPlanId]);
 
 
@@ -226,7 +218,7 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground">Step 1: Choose Your Plan</h3>
-                    <Button variant="outline" size="sm" className="text-xs text-dynamic-accent border-dynamic-accent hover:bg-dynamic-accent/10">
+                    <Button variant="outline" size="sm" className="text-xs text-dynamic-accent border-dynamic-accent hover:bg-dynamic-accent/10 hover:text-dynamic-accent">
                       <HelpCircle className="w-3.5 h-3.5 mr-1" /> Help me choose
                     </Button>
                   </div>
@@ -283,3 +275,4 @@ const PlanSelectionSection = forwardRef<HTMLDivElement, PlanSelectionSectionProp
 
 PlanSelectionSection.displayName = 'PlanSelectionSection';
 export default PlanSelectionSection;
+
