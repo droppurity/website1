@@ -7,11 +7,11 @@ const footerSections = [
   {
     title: 'Premium Drinking Water',
     links: [
-      { label: 'Home', href: '/' }, // Added Home link here
+      { label: 'Home', href: '/' },
       { label: 'Plans', href: '/plans' },
-      { label: 'How it works', href: '/#how-it-works' }, // Assuming an ID on the homepage
-      { label: 'Droppurity Advantage', href: '/about#advantage' }, // Assuming an ID on about page
-      { label: 'Customer Stories', href: '/#testimonials' }, // Assuming an ID
+      { label: 'How it works', href: '/#how-it-works' },
+      { label: 'Droppurity Advantage', href: '/about#advantage' },
+      { label: 'Customer Stories', href: '/#testimonials' },
       { label: 'Our Products', href: '/plans' },
     ],
   },
@@ -19,17 +19,17 @@ const footerSections = [
     title: 'Explore',
     links: [
       { label: 'About', href: '/about' },
-      { label: 'Careers', href: '#' }, // Placeholder
-      { label: 'Blog', href: '#' }, // Placeholder
-      { label: 'FAQs', href: '#' }, // Placeholder
+      { label: 'Careers', href: '#' }, 
+      { label: 'Blog', href: '#' }, 
+      { label: 'FAQs', href: '#' }, 
       { label: 'Contact', href: '/contact' },
     ],
   },
   {
     title: 'Terms',
     links: [
-      { label: 'Privacy Policy', href: '#' }, // Placeholder
-      { label: 'Terms of Use', href: '#' }, // Placeholder
+      { label: 'Privacy Policy', href: '#' }, 
+      { label: 'Terms of Use', href: '#' }, 
     ],
   },
 ];
@@ -39,7 +39,7 @@ const socialLinks = [
   { icon: Linkedin, href: '#', label: 'LinkedIn' },
   { icon: Facebook, href: '#', label: 'Facebook' },
   { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: MessageCircle, href: '#', label: 'WhatsApp' }, // Placeholder for WhatsApp
+  { icon: MessageCircle, href: '#', label: 'WhatsApp' }, 
   { icon: Youtube, href: '#', label: 'YouTube' },
 ];
 
@@ -51,7 +51,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-card text-foreground">
+    <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Column 1: Logo and Address */}
@@ -59,10 +59,10 @@ export default function Footer() {
             <Link href="/" className="flex items-center">
               <Image src="/logo.png" alt="Droppurity Logo" width={178} height={48} className="object-contain" />
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-primary-foreground/80">
               Smart Purifiers on Rent. Free Maintenance for Life.
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-primary-foreground/80">
               Plot No. 21, Adarsh Nagar, Opp. Shivaji Chowk, Khadgaon Road,<br />
               WADI, NAGPUR - 440 023. (MH.)
             </p>
@@ -71,11 +71,11 @@ export default function Footer() {
           {/* Columns 2, 3: Link Sections */}
           {footerSections.slice(0, 2).map((section) => (
             <div key={section.title} className="space-y-4">
-              <h3 className="text-lg font-semibold text-primary">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-yellow-300">{section.title}</h3>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    <Link href={link.href} className="text-sm text-primary-foreground/90 hover:text-primary-foreground transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -89,11 +89,11 @@ export default function Footer() {
             {/* Column 1 (continued or new content): Terms */}
              {footerSections.slice(2).map((section) => (
                 <div key={section.title} className="space-y-4 lg:col-start-1">
-                  <h3 className="text-lg font-semibold text-primary">{section.title}</h3>
+                  <h3 className="text-lg font-semibold text-yellow-300">{section.title}</h3>
                   <ul className="space-y-2">
                     {section.links.map((link) => (
                       <li key={link.label}>
-                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                        <Link href={link.href} className="text-sm text-primary-foreground/90 hover:text-primary-foreground transition-colors">
                           {link.label}
                         </Link>
                       </li>
@@ -104,10 +104,10 @@ export default function Footer() {
 
             {/* Column 2 (continued or new content): Refer & Earn */}
             <div className="space-y-4 lg:col-start-2">
-                <h3 className="text-lg font-semibold text-primary">Refer & Earn</h3>
+                <h3 className="text-lg font-semibold text-yellow-300">Refer & Earn</h3>
                 <ul className="space-y-2">
                     <li>
-                        <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                        <Link href="#" className="text-sm text-primary-foreground/90 hover:text-primary-foreground transition-colors">
                             Refer now
                         </Link>
                     </li>
@@ -117,25 +117,25 @@ export default function Footer() {
 
 
         {/* Social Media and Scroll to Top */}
-        <div className="border-t border-border pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div className="border-t border-primary-foreground/30 pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
           <div className="flex space-x-5">
             {socialLinks.map((social) => (
-              <Link key={social.label} href={social.href} aria-label={social.label} className="text-muted-foreground hover:text-primary transition-colors">
+              <Link key={social.label} href={social.href} aria-label={social.label} className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
                 <social.icon className="w-6 h-6" />
               </Link>
             ))}
           </div>
           <button
             onClick={scrollToTop}
-            className="p-2 rounded-full bg-muted hover:bg-accent/20 transition-colors"
+            className="p-2 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors"
             aria-label="Scroll to top"
           >
-            <ArrowUpCircle className="w-6 h-6 text-foreground" />
+            <ArrowUpCircle className="w-6 h-6 text-primary-foreground" />
           </button>
         </div>
 
         {/* Copyright */}
-        <div className="mt-8 text-center text-xs text-muted-foreground">
+        <div className="mt-8 text-center text-xs text-primary-foreground/80">
           <p>&copy; {new Date().getFullYear()} Droppurity. All rights reserved. Smart Purifiers on Rent.</p>
         </div>
       </div>
