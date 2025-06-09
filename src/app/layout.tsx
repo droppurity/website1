@@ -6,6 +6,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import WhatsAppButton from '@/components/layout/WhatsAppButton'; // Added import
 import { usePathname } from 'next/navigation';
 
 // Metadata can still be defined, but it might be better to move it to specific page files if layout becomes fully client-side dependent for title etc.
@@ -37,6 +38,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <WhatsAppButton /> {/* Added WhatsApp button component */}
         <Toaster />
       </body>
     </html>
